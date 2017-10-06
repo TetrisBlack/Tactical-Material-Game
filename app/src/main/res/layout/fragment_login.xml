@@ -5,16 +5,43 @@
     tools:context="hofbo.tactical_material_game.LoginFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
 
-    <Button
-        android:id="@+id/button"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        tools:text="Pls Dont press me" />
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/txt_passwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txt_userEmail"
+            android:layout_marginTop="22dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/txt_userEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:ems="10"
+            android:hint="E-Mail"
+            android:inputType="textWebEmailAddress"
+            android:singleLine="true"
+            android:text="E-Mail" />
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_passwd"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="27dp"
+            android:text="@string/Login" />
+    </RelativeLayout>
 
 </FrameLayout>
