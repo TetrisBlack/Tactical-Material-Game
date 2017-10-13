@@ -1,12 +1,24 @@
 package hofbo.tactical_material_game;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 /**
@@ -20,12 +32,30 @@ import android.view.ViewGroup;
 public class AccountFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_FIREBASEAUTH = "FIREBASEAUTH";
+
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            int id = view.getId();
+            switch (id) {
+                case R.id.btn_register:
+                    register();
+                    break;
+                case R.id.btn_login:
+                    login();
+                    break;
+                case R.id.btn_logout:
+                    logout();
+                    break;
+
+            }
+        }
+    };
+
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private FirebaseAuth mAuth;
 
     private OnFragmentInteractionListener mListener;
 
@@ -38,15 +68,12 @@ public class AccountFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment AccountFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AccountFragment newInstance(String param1, String param2) {
+    public static AccountFragment newInstance(FirebaseAuth mAuth) {
         AccountFragment fragment = new AccountFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,24 +82,91 @@ public class AccountFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
+
         }
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account, container, false);
+        View view = inflater.inflate(R.layout.fragment_account, container, false);
+        Button registerButton = (Button) view.findViewById(R.id.btn_register);
+        Button loginButton = (Button) view.findViewById(R.id.btn_login);
+        Button logoutButton = (Button) view.findViewById(R.id.btn_logout);
+
+        logoutButton.setOnClickListener(mOnClickListener);
+        loginButton.setOnClickListener(mOnClickListener);
+        registerButton.setOnClickListener(mOnClickListener);
+
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+
+    // Tegistrieren
+    public void register() {
+        EditText login_email = (EditText) getActivity().findViewById(R.id.login_email);
+        EditText login_password = (EditText) getActivity().findViewById(R.id.login_password);
+        String email = login_email.getText().toString();
+        String password = login_password.getText().toString();
+
+        mAuth.createUserWithEmailAndPassword(email,password)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Snackbar snackbar = Snackbar
+                                    .make(getActivity().findViewById(R.id.Fragment_Container), "Registriert", Snackbar.LENGTH_LONG);
+
+                            snackbar.show();
+                        }
+
+                        // ...
+                    }
+                });
     }
+    //Login
+    public void login (){
+        EditText login_email = (EditText) getActivity().findViewById(R.id.login_email);
+        EditText login_password = (EditText) getActivity().findViewById(R.id.login_password);
+        String email = login_email.getText().toString();
+        String password = login_password.getText().toString();
+
+
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Snackbar snackbar = Snackbar
+                                    .make(getActivity().findViewById(R.id.Fragment_Container), "Auth Fail", Snackbar.LENGTH_LONG);
+
+                            snackbar.show();
+                        }
+
+                        // ...
+                    }
+                });
+
+
+    }
+
+    //Logout
+    public void logout(){
+        mAuth.signOut();
+    }
+
+
 
     @Override
     public void onAttach(Context context) {
