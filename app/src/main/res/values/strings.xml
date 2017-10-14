@@ -15,6 +15,9 @@
     <string name="auth_failed">Auth Failed</string>
     <string name="password">Password</string>
     <string name="register">Register</string>
-    <string name="login_with_google">Login With Google</string>
+    <string name="login_with_google">Sign in with Google</string>
     <string name="logout">Logout</string>
+    <string name="name">Name</string>
+    <string name="uid">Uid</string>
+    <string name="profile_pic">Profile Pic</string>
 </resources>
