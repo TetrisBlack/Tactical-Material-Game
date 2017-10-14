@@ -1,29 +1,18 @@
 package hofbo.tactical_material_game;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.support.annotation.HalfFloat;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -33,15 +22,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 
 public class MainActivity extends AppCompatActivity implements
-        LoadoutFragment.OnFragmentInteractionListener, Highscore_Fragment.OnFragmentInteractionListener,
-        Game_Fragment.OnFragmentInteractionListener, NewsFragment.OnFragmentInteractionListener,
+        LoadoutFragment.OnFragmentInteractionListener, HighscoreFragment.OnFragmentInteractionListener,
+        GameFragment.OnFragmentInteractionListener, NewsFragment.OnFragmentInteractionListener,
         AccountFragment.OnFragmentInteractionListener {
 
     //Firebase Auth
@@ -68,11 +52,11 @@ public class MainActivity extends AppCompatActivity implements
                     return true;
                 case R.id.navigation_highscore:
 
-                    transaction.replace(R.id.Fragment_Container, new Highscore_Fragment());
+                    transaction.replace(R.id.Fragment_Container, new HighscoreFragment());
                     transaction.commit();
                     return true;
                 case R.id.navigation_start_game:
-                    transaction.replace(R.id.Fragment_Container, new Game_Fragment());
+                    transaction.replace(R.id.Fragment_Container, new GameFragment());
                     transaction.commit();
                     return true;
                 case R.id.navigation_loadout:
@@ -83,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements
                     transaction.replace(R.id.Fragment_Container, new NewsFragment());
                     transaction.commit();
                     return true;
+
+
             }
             return false;
         }

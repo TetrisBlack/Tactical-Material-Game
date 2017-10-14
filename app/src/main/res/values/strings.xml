@@ -20,4 +20,6 @@
     <string name="name">Name</string>
     <string name="uid">Uid</string>
     <string name="profile_pic">Profile Pic</string>
+    <string name="highglobal">Highscore Global</string>
+    <string name="highself">My Highscore</string>
 </resources>
