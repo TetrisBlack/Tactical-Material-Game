@@ -21,11 +21,11 @@ import static android.content.ContentValues.TAG;
  */
 
 
-public class DatabaseConnect {
+public class SetDatabaseConnect {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 
-    public DatabaseConnect(){
+    public SetDatabaseConnect(){
 
     }
 

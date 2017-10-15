@@ -48,7 +48,7 @@ public class LoadoutFragment extends Fragment {
     };
 
     public void test(){
-        DatabaseConnect db = new DatabaseConnect();
+        SetDatabaseConnect db = new SetDatabaseConnect();
         String photoUrl = "";
         if(mAuth.getCurrentUser().getPhotoUrl() != null){
             photoUrl = mAuth.getCurrentUser().getPhotoUrl().toString();
