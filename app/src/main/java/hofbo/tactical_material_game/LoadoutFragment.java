@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +24,45 @@ public class LoadoutFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            int id = view.getId();
+            switch (id) {
+                case R.id.button3:
+                    test();
+                    break;
+                case R.id.button4:
+
+                    break;
+                case R.id.button5:
+
+                    break;
+
+
+            }
+        }
+    };
+
+    public void test(){
+        DatabaseConnect db = new DatabaseConnect();
+        String photoUrl = "";
+        if(mAuth.getCurrentUser().getPhotoUrl() != null){
+            photoUrl = mAuth.getCurrentUser().getPhotoUrl().toString();
+
+        }
+        db.setUser(
+                mAuth.getCurrentUser().getDisplayName(),
+                mAuth.getCurrentUser().getEmail(),
+                mAuth.getCurrentUser().getUid(),
+                photoUrl);
+
+
+    }
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -64,7 +105,16 @@ public class LoadoutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_loadout, container, false);
+        View view = inflater.inflate(R.layout.fragment_loadout, container, false);
+
+        view.findViewById(R.id.button3).setOnClickListener(mOnClickListener);
+        view.findViewById(R.id.button4).setOnClickListener(mOnClickListener);
+        view.findViewById(R.id.button5).setOnClickListener(mOnClickListener);
+
+
+
+        return view;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

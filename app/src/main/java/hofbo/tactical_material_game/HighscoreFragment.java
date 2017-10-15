@@ -105,17 +105,20 @@ public class HighscoreFragment extends Fragment {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rv.setLayoutManager(llm);
 
-        HighScoreItems itemsData[] = {
-                new HighScoreItems("Olaf", "23"),
-                new HighScoreItems("Günter","23"),
-                new HighScoreItems("Josef", "232"),
-                new HighScoreItems("Magnus", "32"),
-                new HighScoreItems("Fotze", "312"),
-                new HighScoreItems("Lappen", "132")
-        };
         HighScoreItemAdapter mAdapter = new HighScoreItemAdapter(createList(2323));
         rv.setAdapter(mAdapter);
         rv.setItemAnimator(new DefaultItemAnimator());
+
+        //User list
+        final RecyclerView rvu = v.findViewById(R.id.high_card_list_user);
+        rvu.setHasFixedSize(true);
+        final LinearLayoutManager llmu = new LinearLayoutManager(getActivity());
+        llmu.setOrientation(LinearLayoutManager.VERTICAL);
+        rvu.setLayoutManager(llmu);
+
+        HighScoreItemAdapter uAdapter = new HighScoreItemAdapter(createList(30));
+        rvu.setAdapter(uAdapter);
+        rvu.setItemAnimator(new DefaultItemAnimator());
 
         return v;
     }

@@ -5,9 +5,38 @@
     tools:context="hofbo.tactical_material_game.LoadoutFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Loadout" />
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:text="Button" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/button3"
+            android:layout_below="@+id/button3"
+            android:layout_marginTop="18dp"
+            android:text="Button" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/button4"
+            android:layout_below="@+id/button4"
+            android:layout_marginTop="19dp"
+            android:text="Button" />
+    </RelativeLayout>
 
 </FrameLayout>
