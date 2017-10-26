@@ -105,7 +105,7 @@ public class HighscoreFragment extends Fragment {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rv.setLayoutManager(llm);
 
-        HighScoreItemAdapter mAdapter = new HighScoreItemAdapter(createList(2323));
+        HighScoreItemAdapter mAdapter = new HighScoreItemAdapter(createList(100));
         rv.setAdapter(mAdapter);
         rv.setItemAnimator(new DefaultItemAnimator());
 

@@ -1,13 +1,520 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/game_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hofbo.tactical_material_game.GameFragment">
+    tools:context="hofbo.tactical_material_game.GameFragment"
+    tools:layout_editor_absoluteY="81dp">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_36"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_35"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_30">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_35"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_36"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_34"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_29">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_34"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="9dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_35"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_33"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_28">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_32"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_33"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_31"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_26">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_31"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_32"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_25">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="14dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_info">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="14dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_2"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_info" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="14dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_3"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_info" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_5"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="14dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_6"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_4"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_info" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_6"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="14dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_5"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_info" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_7"
+        android:layout_width="50dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_8"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_1">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_8"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_9"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_7"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_2">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_9"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_10"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_8"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_3">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_10"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_11"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_9"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_4">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_11"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_12"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_10"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_5">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_12"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_11"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_6">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_13"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_14"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_7">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_14"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_15"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_13"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_8">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_15"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_16"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_14"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_9">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_16"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_17"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_15"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_10">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_17"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_18"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_16"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_11">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_18"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_17"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_12">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_19"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_20"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_13">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_20"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_21"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_19"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_14">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_21"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_22"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_20"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_15">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_22"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_23"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_21"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_16">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_23"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_24"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_22"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_17">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_24"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_23"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_18">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_25"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_26"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_19">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_26"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_27"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_25"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_20">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_27"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_28"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_26"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_21">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_28"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_29"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_27"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_22">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_29"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_30"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_28"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_23">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_30"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_29"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_24">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_33"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_34"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_32"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_27">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="14dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/game_field_3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/game_field_1"
+        app:layout_constraintTop_toBottomOf="@+id/game_field_info">
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/game_field_info"
+        android:layout_width="395dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:cardElevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" >
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/game_field_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:text="26:14"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_green_light"
+                android:textSize="36sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/game_field_roundnumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:text="Roundnumber"
+                app:layout_constraintStart_toEndOf="@+id/game_field_time"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+</android.support.constraint.ConstraintLayout>
