@@ -180,8 +180,6 @@ public class AccountFragment extends Fragment implements
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
@@ -193,8 +191,8 @@ public class AccountFragment extends Fragment implements
                             FirebaseUser user = mAuth.getCurrentUser();
 
                         } else {
-                            // If sign in fails, display a message to the user.
-
+                            Snackbar.make(getActivity().findViewById(R.id.Fragment_Container), "Google Authentication failed.",
+                                    Snackbar.LENGTH_LONG).show();
 
                         }
 
@@ -209,7 +207,7 @@ public class AccountFragment extends Fragment implements
     }
 
 
-    // Tegistrieren
+    // Registrieren
     public void register() {
         EditText login_email = (EditText) getActivity().findViewById(R.id.login_email);
         EditText login_password = (EditText) getActivity().findViewById(R.id.login_password);
@@ -224,11 +222,14 @@ public class AccountFragment extends Fragment implements
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Snackbar snackbar = Snackbar
-                                    .make(getActivity().findViewById(R.id.Fragment_Container), "Registriert", Snackbar.LENGTH_LONG);
+                        if (task.isSuccessful()) {
+                               Snackbar.make(getActivity().findViewById(R.id.Fragment_Container), "Successfully registered", Snackbar.LENGTH_LONG).show();
 
-                            snackbar.show();
+                        } else {
+                            // If sign in fails, display a message to the user .
+                            Snackbar.make(getActivity().findViewById(R.id.Fragment_Container), "Registering failed.",
+                                    Snackbar.LENGTH_LONG).show();
+
                         }
 
                         // ...
@@ -252,11 +253,11 @@ public class AccountFragment extends Fragment implements
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Snackbar snackbar = Snackbar
-                                    .make(getActivity().findViewById(R.id.Fragment_Container), "Auth Fail", Snackbar.LENGTH_LONG);
-
-                            snackbar.show();
+                        if (task.isSuccessful()) {
+                            Snackbar.make(getActivity().findViewById(R.id.Fragment_Container), "Authentication successful", Snackbar.LENGTH_LONG).show();
+                        } else {
+                            Snackbar.make(getActivity().findViewById(R.id.Fragment_Container), "Authentication failed.",
+                                    Snackbar.LENGTH_LONG).show();
                         }
 
                         // ...

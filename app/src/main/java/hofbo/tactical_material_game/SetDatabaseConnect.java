@@ -30,7 +30,6 @@ public class SetDatabaseConnect {
     }
 
 
-
     public void setUser(String username, String email,String uid, String profilePhotoURL){
        DatabaseReference mDataRef = mDatabase.getReference();
        FirebaseUser user = mAuth.getCurrentUser();
