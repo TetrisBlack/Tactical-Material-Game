@@ -323,7 +323,7 @@ public class AccountFragment extends Fragment implements
                 tmp.setText("");
 
                 ImageView tmpPic = v.findViewById(R.id.imgv_profile_pic);
-                tmpPic.setImageResource(R.drawable.common_google_signin_btn_icon_dark);
+                tmpPic.setImageResource(R.drawable.ic_watch_later_black_24dp);
 
             }
         }
