@@ -23,4 +23,8 @@
     <string name="highglobal">Highscore Global</string>
     <string name="highself">My Highscore</string>
     <string name="ship">ship</string>
+    <string name="live">Live</string>
+    <string name="agility">Agility</string>
+    <string name="power">Power</string>
+    <string name="range">Range</string>
 </resources>

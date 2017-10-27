@@ -1,9 +1,13 @@
 package hofbo.tactical_material_game;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,6 +107,24 @@ public class LoadoutFragment extends Fragment {
         //view.findViewById(R.id.button4).setOnClickListener(mOnClickListener);
         //view.findViewById(R.id.button5).setOnClickListener(mOnClickListener);
 
+        final RecyclerView rv = view.findViewById(R.id.fragment_loadout_listview);
+        rv.setHasFixedSize(true);
+        final LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        rv.setLayoutManager(llm);
+
+        ShipStat[] data =  new ShipStat[3];
+
+        data[0] = new ShipStat("0","Tank",300,1,80,3);
+
+
+
+        data[1] = new ShipStat("1","Scout",60,5,60,2);
+        data[2] = new ShipStat("2","Gunner",125,2,55,3);
+
+        LoadoutItemAdapter mAdapter = new LoadoutItemAdapter(data);
+        rv.setAdapter(mAdapter);
+        rv.setItemAnimator(new DefaultItemAnimator());
 
 
         return view;

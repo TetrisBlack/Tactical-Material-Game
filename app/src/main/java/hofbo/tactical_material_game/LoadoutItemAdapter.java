@@ -6,6 +6,7 @@ package hofbo.tactical_material_game;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
+        import android.widget.ProgressBar;
         import android.widget.TextView;
 
         import java.util.List;
@@ -18,18 +19,18 @@ package hofbo.tactical_material_game;
 public class LoadoutItemAdapter extends RecyclerView.Adapter<LoadoutItemAdapter.ViewHolder> {
     private static final String TAG = "CustomAdapter";
 
-    private LoadoutItemAdapter[] mDataSet;
+    private ShipStat[] mDataSet;
 
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView shipID;
+        //private final TextView shipID;
         private final TextView shipName;
-        private final TextView shipLive;
-        private final TextView shipAgility;
-        private final TextView shipPower;
-        private final TextView shipRange;
+        private final ProgressBar shipLive;
+        private final ProgressBar shipAgility;
+        private final ProgressBar shipPower;
+        private final ProgressBar shipRange;
 
         public ViewHolder(View v) {
             super(v);
@@ -40,30 +41,30 @@ public class LoadoutItemAdapter extends RecyclerView.Adapter<LoadoutItemAdapter.
                     Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
                 }
             });
-            shipID = v.findViewById(R.id.high_player);
+            //shipID = v.findViewById(R.id.high_player);
             shipName = v.findViewById(R.id.loadout_ship_name);
-            shipLive = v.findViewById(R.id.loadout_items_live);
-            shipAgility = v.findViewById(R.id.loadout_items_agility);
-            shipPower = v.findViewById(R.id.loadout_items_power);
-            shipRange = v.findViewById(R.id.loadout_items_range);
+            shipLive = v.findViewById(R.id.loadout_prog_live);
+            shipAgility = v.findViewById(R.id.loadout_prog_agility);
+            shipPower = v.findViewById(R.id.loadout_prog_power);
+            shipRange = v.findViewById(R.id.loadout_prog_range);
         }
 
-        public TextView getShipID() {
-            return shipID;
-        }
+        //public TextView getShipID() {
+        //    return shipID;
+        //}
         public TextView getShipName() {
             return shipName;
         }
-        public TextView getShipLive() {
+        public ProgressBar getShipLive() {
             return shipLive;
         }
-        public TextView getShipAgility() {
+        public ProgressBar getShipAgility() {
             return shipAgility;
         }
-        public TextView getShipPower() {
+        public ProgressBar getShipPower() {
             return shipPower;
         }
-        public TextView getShipRange() {
+        public ProgressBar getShipRange() {
             return shipRange;
         }
 
@@ -76,7 +77,7 @@ public class LoadoutItemAdapter extends RecyclerView.Adapter<LoadoutItemAdapter.
      *
      * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
      */
-    public LoadoutItemAdapter(LoadoutItemAdapter[] dataSet) {
+    public LoadoutItemAdapter(ShipStat[] dataSet) {
         mDataSet = dataSet;
     }
 
@@ -98,8 +99,12 @@ public class LoadoutItemAdapter extends RecyclerView.Adapter<LoadoutItemAdapter.
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
 
-        //viewHolder.getName().setText(mDataSet[position].name);
-        //viewHolder.getScore().setText(mDataSet[position].score);
+        viewHolder.getShipName().setText(mDataSet[position].shipName);
+        //viewHolder.getShipID().setText(mDataSet[position].shipID);
+        viewHolder.getShipLive().setProgress(mDataSet[position].shipLive);
+        viewHolder.getShipPower().setProgress(mDataSet[position].shipPower);
+        viewHolder.getShipAgility().setProgress(mDataSet[position].shipAgility);
+        viewHolder.getShipRange().setProgress(mDataSet[position].shipRange);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

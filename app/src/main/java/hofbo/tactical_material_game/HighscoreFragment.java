@@ -100,7 +100,6 @@ public class HighscoreFragment extends Fragment {
         //Global list
         final RecyclerView rv = v.findViewById(R.id.high_card_list);
         rv.setHasFixedSize(true);
-        final Activity c = getActivity();
         final LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rv.setLayoutManager(llm);
