@@ -32,15 +32,7 @@ public class LoadoutFragment extends Fragment {
 
             int id = view.getId();
             switch (id) {
-                case R.id.button3:
-                    test();
-                    break;
-                case R.id.button4:
 
-                    break;
-                case R.id.button5:
-
-                    break;
 
 
             }
@@ -107,9 +99,9 @@ public class LoadoutFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_loadout, container, false);
 
-        view.findViewById(R.id.button3).setOnClickListener(mOnClickListener);
-        view.findViewById(R.id.button4).setOnClickListener(mOnClickListener);
-        view.findViewById(R.id.button5).setOnClickListener(mOnClickListener);
+        //view.findViewById(R.id.button3).setOnClickListener(mOnClickListener);
+        //view.findViewById(R.id.button4).setOnClickListener(mOnClickListener);
+        //view.findViewById(R.id.button5).setOnClickListener(mOnClickListener);
 
 
 

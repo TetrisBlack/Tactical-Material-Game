@@ -22,4 +22,5 @@
     <string name="profile_pic">Profile Pic</string>
     <string name="highglobal">Highscore Global</string>
     <string name="highself">My Highscore</string>
+    <string name="ship">ship</string>
 </resources>

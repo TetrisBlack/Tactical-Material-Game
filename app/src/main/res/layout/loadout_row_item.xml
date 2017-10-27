@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="166dp"
+        android:layout_margin="8dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/loadout_items_range"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toEndOf="@+id/loadout_items_pic"
+                app:layout_constraintTop_toBottomOf="@+id/loadout_items_power"
+                tools:text="Range" />
+
+            <ProgressBar
+                android:id="@+id/loadout_prog_range"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="19dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:max="100"
+                android:progress="54"
+                android:progressTint="@android:color/holo_red_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/loadout_items_agility"
+                app:layout_constraintTop_toBottomOf="@+id/loadout_prog_power" />
+
+            <TextView
+                android:id="@+id/loadout_items_power"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toEndOf="@+id/loadout_items_pic"
+                app:layout_constraintTop_toBottomOf="@+id/loadout_items_agility"
+                tools:text="Power" />
+
+            <ProgressBar
+                android:id="@+id/loadout_prog_power"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="19dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:max="100"
+                android:progress="54"
+                android:progressTint="@android:color/holo_red_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/loadout_items_power"
+                app:layout_constraintTop_toBottomOf="@+id/loadout_prog_agility" />
+
+            <TextView
+                android:id="@+id/loadout_items_agility"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toEndOf="@+id/loadout_items_pic"
+                app:layout_constraintTop_toBottomOf="@+id/loadout_items_live"
+                tools:text="Agility" />
+
+            <ProgressBar
+                android:id="@+id/loadout_prog_agility"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="19dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:max="100"
+                android:progress="54"
+                android:progressTint="@android:color/holo_red_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/loadout_items_agility"
+                app:layout_constraintTop_toBottomOf="@+id/loadout_prog_live" />
+
+            <ImageView
+                android:id="@+id/loadout_items_pic"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/ship"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="?android:attr/listChoiceIndicatorSingle" />
+
+            <ProgressBar
+                android:id="@+id/loadout_prog_live"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="19dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:max="100"
+                android:progress="54"
+                android:progressTint="@android:color/holo_red_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/loadout_prog_agility"
+                app:layout_constraintTop_toBottomOf="@+id/loadout_ship_name" />
+
+            <TextView
+                android:id="@+id/loadout_ship_name"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/loadout_items_pic"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="loadout_ship_name" />
+
+            <TextView
+                android:id="@+id/loadout_items_live"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toEndOf="@+id/loadout_items_pic"
+                app:layout_constraintTop_toBottomOf="@+id/loadout_ship_name"
+                tools:text="Live" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>
