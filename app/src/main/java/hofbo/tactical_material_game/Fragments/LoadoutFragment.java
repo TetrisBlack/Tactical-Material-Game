@@ -1,27 +1,54 @@
-package hofbo.tactical_material_game;
+package hofbo.tactical_material_game.Fragments;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.firebase.auth.FirebaseAuth;
+
+import hofbo.tactical_material_game.LoadoutItemAdapter;
+import hofbo.tactical_material_game.R;
+
+import hofbo.tactical_material_game.ShipStat;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link NewsFragment.OnFragmentInteractionListener} interface
+ * {@link LoadoutFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link NewsFragment#newInstance} factory method to
+ * Use the {@link LoadoutFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewsFragment extends Fragment {
+public class LoadoutFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            int id = view.getId();
+            switch (id) {
+
+
+
+            }
+        }
+    };
+
+
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -29,7 +56,7 @@ public class NewsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public NewsFragment() {
+    public LoadoutFragment() {
         // Required empty public constructor
     }
 
@@ -39,11 +66,11 @@ public class NewsFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment NewsFragment.
+     * @return A new instance of fragment LoadoutFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NewsFragment newInstance(String param1, String param2) {
-        NewsFragment fragment = new NewsFragment();
+    public static LoadoutFragment newInstance(String param1, String param2) {
+        LoadoutFragment fragment = new LoadoutFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -64,7 +91,34 @@ public class NewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_news, container, false);
+        View view = inflater.inflate(R.layout.fragment_loadout, container, false);
+
+        //view.findViewById(R.id.button3).setOnClickListener(mOnClickListener);
+        //view.findViewById(R.id.button4).setOnClickListener(mOnClickListener);
+        //view.findViewById(R.id.button5).setOnClickListener(mOnClickListener);
+
+        final RecyclerView rv = view.findViewById(R.id.fragment_loadout_listview);
+        rv.setHasFixedSize(true);
+        final LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        rv.setLayoutManager(llm);
+
+        ShipStat[] data =  new ShipStat[3];
+
+        data[0] = new ShipStat("0","Tank",300,1,80,3);
+
+
+
+        data[1] = new ShipStat("1","Scout",60,5,60,2);
+        data[2] = new ShipStat("2","Gunner",125,2,55,3);
+
+        LoadoutItemAdapter mAdapter = new LoadoutItemAdapter(data);
+        rv.setAdapter(mAdapter);
+        rv.setItemAnimator(new DefaultItemAnimator());
+
+
+        return view;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

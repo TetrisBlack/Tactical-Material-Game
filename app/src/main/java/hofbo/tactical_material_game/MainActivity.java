@@ -22,6 +22,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import hofbo.tactical_material_game.Fragments.AccountFragment;
+import hofbo.tactical_material_game.Fragments.GameFragment;
+import hofbo.tactical_material_game.Fragments.HighscoreFragment;
+import hofbo.tactical_material_game.Fragments.LoadoutFragment;
+import hofbo.tactical_material_game.Fragments.NewsFragment;
+
 
 public class MainActivity extends AppCompatActivity implements
         LoadoutFragment.OnFragmentInteractionListener, HighscoreFragment.OnFragmentInteractionListener,
@@ -34,6 +40,10 @@ public class MainActivity extends AppCompatActivity implements
     private FirebaseAnalytics mFirebaseAnalytics;
     public Bitmap uProfilePic;
 
+    //Fragment helper
+    private int currentFragment = 0;
+    private int lastFragment = 0;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -44,26 +54,37 @@ public class MainActivity extends AppCompatActivity implements
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+
+
             switch (item.getItemId()) {
                 case R.id.navigation_settings:
+                    setFragmentAnimation(0,transaction);
 
                     transaction.replace(R.id.Fragment_Container, new AccountFragment());
                     transaction.commit();
                     return true;
                 case R.id.navigation_highscore:
+                    setFragmentAnimation(1,transaction);
 
                     transaction.replace(R.id.Fragment_Container, new HighscoreFragment());
                     transaction.commit();
                     return true;
                 case R.id.navigation_start_game:
+                    setFragmentAnimation(2,transaction);
+
                     transaction.replace(R.id.Fragment_Container, new GameFragment());
                     transaction.commit();
                     return true;
                 case R.id.navigation_loadout:
+                    setFragmentAnimation(3,transaction);
+
                     transaction.replace(R.id.Fragment_Container, new LoadoutFragment());
                     transaction.commit();
                     return true;
                 case R.id.navigation_news:
+                    setFragmentAnimation(4,transaction);
+
                     transaction.replace(R.id.Fragment_Container, new NewsFragment());
                     transaction.commit();
                     return true;
@@ -142,6 +163,21 @@ public class MainActivity extends AppCompatActivity implements
                     }
                 });
     }
+    public void setFragmentAnimation(int currentFragment, FragmentTransaction transaction){
+
+        if(currentFragment == lastFragment){
+
+        }else if(currentFragment > lastFragment){
+            transaction.setCustomAnimations(R.animator.slide_in_right,R.animator.slide_out_right);
+
+        }else if(currentFragment < lastFragment){
+            transaction.setCustomAnimations(R.animator.slide_in_left,R.animator.slide_out_left);
+
+        }
+        lastFragment = currentFragment;
+
+    }
+
 
     @Override
     public void onFragmentInteraction(Uri uri) {

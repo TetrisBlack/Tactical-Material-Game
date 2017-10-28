@@ -1,6 +1,5 @@
-package hofbo.tactical_material_game;
+package hofbo.tactical_material_game.Fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,54 +10,26 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TabHost;
 
-import com.google.firebase.auth.FirebaseAuth;
+import hofbo.tactical_material_game.HighScoreItemAdapter;
+import hofbo.tactical_material_game.HighScoreItems;
+import hofbo.tactical_material_game.R;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link LoadoutFragment.OnFragmentInteractionListener} interface
+ * {@link HighscoreFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link LoadoutFragment#newInstance} factory method to
+ * Use the {@link HighscoreFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LoadoutFragment extends Fragment {
+public class HighscoreFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
-    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-
-            int id = view.getId();
-            switch (id) {
-
-
-
-            }
-        }
-    };
-
-    public void test(){
-        SetDatabaseConnect db = new SetDatabaseConnect();
-        String photoUrl = "";
-        if(mAuth.getCurrentUser().getPhotoUrl() != null){
-            photoUrl = mAuth.getCurrentUser().getPhotoUrl().toString();
-
-        }
-        db.setUser(
-                mAuth.getCurrentUser().getDisplayName(),
-                mAuth.getCurrentUser().getEmail(),
-                mAuth.getCurrentUser().getUid(),
-                photoUrl);
-
-
-    }
-
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -66,7 +37,7 @@ public class LoadoutFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public LoadoutFragment() {
+    public HighscoreFragment() {
         // Required empty public constructor
     }
 
@@ -76,11 +47,11 @@ public class LoadoutFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment LoadoutFragment.
+     * @return A new instance of fragment HighscoreFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static LoadoutFragment newInstance(String param1, String param2) {
-        LoadoutFragment fragment = new LoadoutFragment();
+    public static HighscoreFragment newInstance(String param1, String param2) {
+        HighscoreFragment fragment = new HighscoreFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -95,48 +66,58 @@ public class LoadoutFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_loadout, container, false);
+        View v = inflater.inflate(R.layout.fragment_highscore_, container, false);
 
-        //view.findViewById(R.id.button3).setOnClickListener(mOnClickListener);
-        //view.findViewById(R.id.button4).setOnClickListener(mOnClickListener);
-        //view.findViewById(R.id.button5).setOnClickListener(mOnClickListener);
 
-        final RecyclerView rv = view.findViewById(R.id.fragment_loadout_listview);
+        //Tab inialisation
+        TabHost host = v.findViewById(R.id.highscoretabhost);
+        host.setup();
+
+        //Tab 1
+        TabHost.TabSpec spec = host.newTabSpec("Tab One");
+        spec.setContent(R.id.high_tab_1);
+        spec.setIndicator(getString(R.string.highglobal));
+        host.addTab(spec);
+
+        //Tab 2
+        spec = host.newTabSpec("Tab Two");
+        spec.setContent(R.id.high_tab_2);
+        spec.setIndicator(getString(R.string.highself));
+        host.addTab(spec);
+
+        //Global list
+        final RecyclerView rv = v.findViewById(R.id.high_card_list);
         rv.setHasFixedSize(true);
         final LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rv.setLayoutManager(llm);
 
-        ShipStat[] data =  new ShipStat[3];
-
-        data[0] = new ShipStat("0","Tank",300,1,80,3);
-
-
-
-        data[1] = new ShipStat("1","Scout",60,5,60,2);
-        data[2] = new ShipStat("2","Gunner",125,2,55,3);
-
-        LoadoutItemAdapter mAdapter = new LoadoutItemAdapter(data);
+        HighScoreItemAdapter mAdapter = new HighScoreItemAdapter(createList(100));
         rv.setAdapter(mAdapter);
         rv.setItemAnimator(new DefaultItemAnimator());
 
+        //User list
+        final RecyclerView rvu = v.findViewById(R.id.high_card_list_user);
+        rvu.setHasFixedSize(true);
+        final LinearLayoutManager llmu = new LinearLayoutManager(getActivity());
+        llmu.setOrientation(LinearLayoutManager.VERTICAL);
+        rvu.setLayoutManager(llmu);
 
-        return view;
+        HighScoreItemAdapter uAdapter = new HighScoreItemAdapter(createList(30));
+        rvu.setAdapter(uAdapter);
+        rvu.setItemAnimator(new DefaultItemAnimator());
 
+        return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -155,6 +136,7 @@ public class LoadoutFragment extends Fragment {
         mListener = null;
     }
 
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -169,4 +151,19 @@ public class LoadoutFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    private HighScoreItems[] createList(int size) {
+
+        HighScoreItems[] result = new HighScoreItems[size];
+        for (int i=0;i < size; i++) {
+
+            result[i] = new HighScoreItems("Player " + i,"" + (size - i)*13);
+
+
+        }
+
+        return result;
+    }
 }
+
+

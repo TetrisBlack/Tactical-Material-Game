@@ -1,4 +1,4 @@
-package hofbo.tactical_material_game;
+package hofbo.tactical_material_game.Fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -7,6 +7,8 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import hofbo.tactical_material_game.R;
 
 
 /**

@@ -4,7 +4,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hofbo.tactical_material_game.LoadoutFragment">
+    tools:context="hofbo.tactical_material_game.Fragments.LoadoutFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
