@@ -1,20 +1,29 @@
 package hofbo.tactical_material_game.Fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Picture;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -56,6 +65,8 @@ public class AccountFragment extends Fragment implements
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
 
+    private ProgressBar spinner;
+
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -63,15 +74,18 @@ public class AccountFragment extends Fragment implements
             switch (id) {
                 case R.id.btn_register:
                     register();
+                    spinner.setVisibility(View.VISIBLE);
                     break;
                 case R.id.btn_login:
                     login();
+                    spinner.setVisibility(View.VISIBLE);
                     break;
                 case R.id.btn_logout:
                     logout();
                     break;
                 case R.id.btn_login_with_google:
                     signIn();
+                    spinner.setVisibility(View.VISIBLE);
                     break;
 
             }
@@ -152,7 +166,19 @@ public class AccountFragment extends Fragment implements
         view.findViewById(R.id.btn_login).setOnClickListener(mOnClickListener);
         view.findViewById(R.id.btn_logout).setOnClickListener(mOnClickListener);
         view.findViewById(R.id.btn_login_with_google).setOnClickListener(mOnClickListener);
+        spinner = (ProgressBar)view.findViewById(R.id.progressBar);
+        spinner.setVisibility(View.GONE);
 
+
+        EditText login_email = (EditText) view.findViewById(R.id.login_email);
+        EditText login_password = (EditText) view.findViewById(R.id.login_password);
+
+        //set listeners
+        login_email.addTextChangedListener(textWatcher);
+        login_password.addTextChangedListener(textWatcher);
+
+        // run once to disable if empty
+        checkFieldsForEmptyValues(view);
 
         return view;
     }
@@ -173,7 +199,8 @@ public class AccountFragment extends Fragment implements
                 // ...
             }
         }
-    }
+        spinner.setVisibility(View.GONE);
+}
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -205,36 +232,45 @@ public class AccountFragment extends Fragment implements
 
     // Registrieren
     public void register() {
+
         EditText login_email = (EditText) getActivity().findViewById(R.id.login_email);
         EditText login_password = (EditText) getActivity().findViewById(R.id.login_password);
-        String email = login_email.getText().toString();
-        String password = login_password.getText().toString();
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+        if(login_email.getText() != null && login_password.getText() != null){
 
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (task.isSuccessful()) {
-                               Snackbar.make(getActivity().findViewById(R.id.Fragment_Container), "Successfully registered", Snackbar.LENGTH_LONG).show();
+            String email = login_email.getText().toString();
+            String password = login_password.getText().toString();
 
-                        } else {
-                            // If sign in fails, display a message to the user .
-                            Snackbar.make(getActivity().findViewById(R.id.Fragment_Container), "Registering failed.",
-                                    Snackbar.LENGTH_LONG).show();
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
 
+                            // If sign in fails, display a message to the user. If sign in succeeds
+                            // the auth state listener will be notified and logic to handle the
+                            // signed in user can be handled in the listener.
+                            if (task.isSuccessful()) {
+                                Snackbar.make(getActivity().findViewById(R.id.Fragment_Container), "Successfully registered", Snackbar.LENGTH_LONG).show();
+                                spinner.setVisibility(View.GONE);
+                            } else {
+                                // If sign in fails, display a message to the user .
+                                Snackbar.make(getActivity().findViewById(R.id.Fragment_Container), "Registering failed.",
+                                        Snackbar.LENGTH_LONG).show();
+                                spinner.setVisibility(View.GONE);
+
+                            }
+
+                            // ...
                         }
+                    });
+        }
 
-                        // ...
-                    }
-                });
+
     }
 
     //Login
     public void login() {
+
         EditText login_email = (EditText) getActivity().findViewById(R.id.login_email);
         EditText login_password = (EditText) getActivity().findViewById(R.id.login_password);
         String email = login_email.getText().toString();
@@ -251,21 +287,29 @@ public class AccountFragment extends Fragment implements
                         // signed in user can be handled in the listener.
                         if (task.isSuccessful()) {
                             Snackbar.make(getActivity().findViewById(R.id.Fragment_Container), "Authentication successful", Snackbar.LENGTH_LONG).show();
+                            spinner.setVisibility(View.GONE);
                         } else {
                             Snackbar.make(getActivity().findViewById(R.id.Fragment_Container), "Authentication failed.",
                                     Snackbar.LENGTH_LONG).show();
+                            spinner.setVisibility(View.GONE);
                         }
 
                         // ...
                     }
                 });
 
-
     }
 
     //Logout
     public void logout() {
+
+        EditText login_email = (EditText) getActivity().findViewById(R.id.login_email);
+        EditText login_password = (EditText) getActivity().findViewById(R.id.login_password);
+
+        login_email.setText("");
+        login_password.setText("");
         mAuth.signOut();
+
     }
 
     //Update UI
@@ -379,4 +423,56 @@ public class AccountFragment extends Fragment implements
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    private  void checkFieldsForEmptyValues(View view){
+        Button b = (Button) view.findViewById(R.id.btn_login);
+        Button b2 = (Button) view.findViewById(R.id.btn_register);
+
+        EditText login_email = (EditText) view.findViewById(R.id.login_email);
+        EditText login_password = (EditText) view.findViewById(R.id.login_password);
+
+        String s1 = login_email.getText().toString();
+        String s2 = login_password.getText().toString();
+
+        if(s1.equals("") && s2.equals(""))
+        {
+            b.setEnabled(false);
+            b2.setEnabled(false);
+        }
+
+        else if(!s1.equals("")&&s2.equals("")){
+            b.setEnabled(false);
+            b2.setEnabled(false);
+        }
+
+        else if(!s2.equals("")&&s1.equals(""))
+        {
+            b.setEnabled(false);
+            b2.setEnabled(false);
+        }
+
+        else
+        {
+            b.setEnabled(true);
+            b2.setEnabled(true);
+        }
+    }
+
+    //TextWatcher
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3)
+        {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            checkFieldsForEmptyValues(getActivity().findViewById(R.id.Fragment_Container));
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+        }
+    };
 }

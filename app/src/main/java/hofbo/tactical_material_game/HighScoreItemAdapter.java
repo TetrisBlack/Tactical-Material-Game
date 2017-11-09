@@ -13,7 +13,6 @@ import java.util.List;
  * Created by Deniz on 14.10.2017.
  */
 
-
     public class HighScoreItemAdapter extends RecyclerView.Adapter<HighScoreItemAdapter.ViewHolder> {
         private static final String TAG = "CustomAdapter";
 

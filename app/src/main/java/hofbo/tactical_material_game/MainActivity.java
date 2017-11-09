@@ -111,19 +111,13 @@ public class MainActivity extends AppCompatActivity implements
                 if (user != null) {
                     // User is signed in
 
-
                     AccountFragment.updateUI(true,findViewById(R.id.Fragment_Container),mAuth);
-                    Snackbar snackbar = Snackbar
-                            .make(findViewById(R.id.Fragment_Container), "Willkommen zurück " + user.getDisplayName(), Snackbar.LENGTH_SHORT);
+                    Snackbar.make(findViewById(R.id.Fragment_Container), "Willkommen zurück " + user.getDisplayName(), Snackbar.LENGTH_SHORT).show();
 
-                    snackbar.show();
                 } else {
                     // User is signed out
                     AccountFragment.updateUI(false,findViewById(R.id.Fragment_Container),mAuth);
-                    Snackbar snackbar = Snackbar
-                            .make(findViewById(R.id.Fragment_Container), "Logged Out", Snackbar.LENGTH_LONG);
-
-                    snackbar.show();
+                    Snackbar.make(findViewById(R.id.Fragment_Container), "Logged Out", Snackbar.LENGTH_LONG).show();
                 }
                 // ...
             }
@@ -139,8 +133,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
