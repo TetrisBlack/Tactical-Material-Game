@@ -4,14 +4,23 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 import hofbo.tactical_material_game.LoadoutItemAdapter;
 import hofbo.tactical_material_game.R;
@@ -32,7 +41,9 @@ public class LoadoutFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
@@ -105,16 +116,38 @@ public class LoadoutFragment extends Fragment {
 
         ShipStat[] data =  new ShipStat[3];
 
-        data[0] = new ShipStat("0","Tank",300,1,80,3);
+        db.collection("ships")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            ArrayList<ShipStat> newsItems = new ArrayList<ShipStat>();
+                            for (DocumentSnapshot document : task.getResult()) {
+                                Log.d("Loadout:", document.getId() + " => " + document.getData());
+                                newsItems.add(new ShipStat(document.getId(),document.getString("shipName"),document.getDouble("shipLive"),document.getDouble("shipAgility"),document.getDouble("shipPower"), document.getDouble("shipRange")));
+
+                            }
+
+                            ShipStat[] readyNewsItems = newsItems.toArray(new ShipStat[newsItems.size()]);
 
 
 
-        data[1] = new ShipStat("1","Scout",60,5,60,2);
-        data[2] = new ShipStat("2","Gunner",125,2,55,3);
+                            LoadoutItemAdapter mAdapter = new LoadoutItemAdapter(readyNewsItems);
 
-        LoadoutItemAdapter mAdapter = new LoadoutItemAdapter(data);
-        rv.setAdapter(mAdapter);
-        rv.setItemAnimator(new DefaultItemAnimator());
+                            rv.setAdapter(mAdapter);
+                            rv.setItemAnimator(new DefaultItemAnimator());
+
+
+                        } else {
+                            Log.w("LOADOUT:", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+
+
+
 
 
         return view;

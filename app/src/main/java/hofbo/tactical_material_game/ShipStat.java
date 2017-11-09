@@ -13,13 +13,13 @@ public class ShipStat {
     protected int shipPower;
     protected int shipRange;
 
-    public ShipStat (String shipID, String shipName, int shipLive, int shipAgility,int shipPower, int shipRange){
+    public ShipStat (String shipID, String shipName, double shipLive, double shipAgility,double shipPower, double shipRange){
         this.shipID = shipID;
         this.shipName = shipName;
-        this.shipLive = shipLive;
-        this.shipAgility = shipAgility;
-        this.shipPower = shipPower;
-        this.shipRange = shipRange;
+        this.shipLive = (int)shipLive;
+        this.shipAgility = (int)shipAgility;
+        this.shipPower = (int)shipPower;
+        this.shipRange = (int)shipRange;
 
 
     }

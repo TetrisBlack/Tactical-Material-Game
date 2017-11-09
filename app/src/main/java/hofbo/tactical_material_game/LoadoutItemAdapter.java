@@ -39,6 +39,11 @@ public class LoadoutItemAdapter extends RecyclerView.Adapter<LoadoutItemAdapter.
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
+
+
+
+
+
                 }
             });
             //shipID = v.findViewById(R.id.high_player);
