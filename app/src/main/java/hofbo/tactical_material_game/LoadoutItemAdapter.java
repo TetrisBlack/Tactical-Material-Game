@@ -39,6 +39,7 @@ public class LoadoutItemAdapter extends RecyclerView.Adapter<LoadoutItemAdapter.
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
+                    //TODO: einstellungen des Loadout an die datenbank übergeben
 
 
 

@@ -28,4 +28,5 @@
     <string name="power">Power</string>
     <string name="range">Range</string>
     <string name="newsImage">News image</string>
+    <string name="title_activity_login">LoginActivity</string>
 </resources>
