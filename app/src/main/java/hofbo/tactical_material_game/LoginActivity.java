@@ -15,6 +15,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+
+import android.text.Editable;
+import android.text.TextWatcher;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -36,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private int status = 0;
 
-
+    private ProgressBar spinner;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -106,12 +109,17 @@ public class LoginActivity extends AppCompatActivity {
                             // the auth state listener will be notified and logic to handle the
                             // signed in user can be handled in the listener.
                             if (task.isSuccessful()) {
+                                Snackbar.make(findViewById(R.id.Fragment_Container), "Authentication failed.",
+                                        Snackbar.LENGTH_LONG).show();
+                                spinner.setVisibility(View.GONE);
 
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 finish();
 
                             } else {
-                                // If sign in fails, display a message to the user .
+                                Snackbar.make(findViewById(R.id.Fragment_Container), "Authentication failed.",
+                                        Snackbar.LENGTH_LONG).show();
+                                spinner.setVisibility(View.GONE);
 
 
                             }
@@ -132,6 +140,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = login_email.getText().toString();
         String password = login_password.getText().toString();
 
+
         if (email.length() > 0 && password.length() > 0) {
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -142,11 +151,14 @@ public class LoginActivity extends AppCompatActivity {
                             // the auth state listener will be notified and logic to handle the
                             // signed in user can be handled in the listener.
                             if (task.isSuccessful()) {
+                                Snackbar.make(findViewById(R.id.Fragment_Container), "Authentication successful", Snackbar.LENGTH_LONG).show();
+                                spinner.setVisibility(View.GONE);
                                 Log.d("WHY?", "Logged in!");
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 finish();
                             } else {
-                                Log.d("WHY?", "ERROR");
+                                Snackbar.make(findViewById(R.id.Fragment_Container), "Authentication failed.", Snackbar.LENGTH_LONG).show();
+                                spinner.setVisibility(View.GONE);
                             }
 
                             // ...
@@ -191,10 +203,17 @@ public class LoginActivity extends AppCompatActivity {
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
+        EditText login_email = (EditText) findViewById(R.id.input_email);
+        EditText login_password = (EditText) findViewById(R.id.input_password);
+
         Button btn = findViewById(R.id.btn_login);
+        btn.setEnabled(false);
         btn.setOnClickListener(btnListener);
         findViewById(R.id.btn_login_with_google).setOnClickListener(btnListener);
         findViewById(R.id.link_signup).setOnClickListener(btnListener);
+
+        login_email.addTextChangedListener(textWatcher);
+        login_password.addTextChangedListener(textWatcher);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -231,20 +250,19 @@ public class LoginActivity extends AppCompatActivity {
             // So we will make
             switch (v.getId() /*to get clicked view id**/) {
                 case R.id.btn_login:
-
+                    spinner.setVisibility(View.VISIBLE);
                     if(status == 0){
                         login();
                     }if(status== 1){
                         register();
                 }
-
                     // do something when the corky is clicked
-
                     break;
 
 
                 case R.id.btn_login_with_google:
                     signIn();
+                    spinner.setVisibility(View.VISIBLE);
 
                     break;
 
@@ -271,6 +289,49 @@ public class LoginActivity extends AppCompatActivity {
 
         }
     }
+    private  void checkFieldsForEmptyValues(View view){
+        Button b = (Button) view.findViewById(R.id.btn_login);
 
+        EditText login_email = (EditText) view.findViewById(R.id.input_email);
+        EditText login_password = (EditText) view.findViewById(R.id.input_password);
 
+        String s1 = login_email.getText().toString();
+        String s2 = login_password.getText().toString();
+
+        if(s1.equals("") && s2.equals(""))
+        {
+            b.setEnabled(false);
+        }
+
+        else if(!s1.equals("")&& s2.equals("")){
+            b.setEnabled(false);
+        }
+
+        else if(!s2.equals("")&& s1.equals(""))
+        {
+            b.setEnabled(false);
+        }
+
+        else
+        {
+            b.setEnabled(true);
+        }
+    }
+    //TextWatcher
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3)
+        {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            checkFieldsForEmptyValues(findViewById(R.id.Fragment_Container));
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+        }
+    };
 }
