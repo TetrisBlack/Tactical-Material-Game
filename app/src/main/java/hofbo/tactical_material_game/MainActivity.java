@@ -1,5 +1,6 @@
 package hofbo.tactical_material_game;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.app.FragmentTransaction;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -27,6 +29,8 @@ import hofbo.tactical_material_game.Fragments.GameFragment;
 import hofbo.tactical_material_game.Fragments.HighscoreFragment;
 import hofbo.tactical_material_game.Fragments.LoadoutFragment;
 import hofbo.tactical_material_game.Fragments.NewsFragment;
+
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 
 public class MainActivity extends AppCompatActivity implements
@@ -118,6 +122,9 @@ public class MainActivity extends AppCompatActivity implements
                     // User is signed out
                     AccountFragment.updateUI(false,findViewById(R.id.Fragment_Container),mAuth);
                     Snackbar.make(findViewById(R.id.Fragment_Container), "Logged Out", Snackbar.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
                 }
                 // ...
             }
