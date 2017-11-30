@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
     private FirebaseAuth mAuth;
+    private int status = 0;
 
 
 
@@ -90,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         EditText login_email = (EditText) this.findViewById(R.id.input_email);
         EditText login_password = (EditText) this.findViewById(R.id.input_password);
 
-        if (login_email.getText() != null && login_password.getText() != null) {
+        if (login_email.getText().length() > 0 && login_password.getText().length() > 5) {
 
             String email = login_email.getText().toString();
             String password = login_password.getText().toString();
@@ -105,6 +107,8 @@ public class LoginActivity extends AppCompatActivity {
                             // signed in user can be handled in the listener.
                             if (task.isSuccessful()) {
 
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                finish();
 
                             } else {
                                 // If sign in fails, display a message to the user .
@@ -139,6 +143,8 @@ public class LoginActivity extends AppCompatActivity {
                             // signed in user can be handled in the listener.
                             if (task.isSuccessful()) {
                                 Log.d("WHY?", "Logged in!");
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                finish();
                             } else {
                                 Log.d("WHY?", "ERROR");
                             }
@@ -150,18 +156,33 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
+    public void startSignup(){
+        if(status == 0){
+            Button btn = findViewById(R.id.btn_login);
+            btn.setText("Register");
+            findViewById(R.id.btn_login_with_google).setVisibility(View.INVISIBLE);
+            TextView txt = findViewById(R.id.link_signup);
+            txt.setText("Back to the login");
+            status = 1;
 
-    //Logout
-    public void logout() {
 
-        EditText login_email = (EditText) this.findViewById(R.id.input_email);
-        EditText login_password = (EditText) this.findViewById(R.id.input_password);
+        }else if(status == 1){
+            Button btn = findViewById(R.id.btn_login);
+            btn.setText("Login");
+            findViewById(R.id.btn_login_with_google).setVisibility(View.VISIBLE);
+            TextView txt = findViewById(R.id.link_signup);
+            txt.setText("No Account? :O");
+            status = 0;
 
-        login_email.setText("");
-        login_password.setText("");
-        mAuth.signOut();
+
+
+        }
+
+
 
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +194,7 @@ public class LoginActivity extends AppCompatActivity {
         Button btn = findViewById(R.id.btn_login);
         btn.setOnClickListener(btnListener);
         findViewById(R.id.btn_login_with_google).setOnClickListener(btnListener);
+        findViewById(R.id.link_signup).setOnClickListener(btnListener);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -209,7 +231,13 @@ public class LoginActivity extends AppCompatActivity {
             // So we will make
             switch (v.getId() /*to get clicked view id**/) {
                 case R.id.btn_login:
-                    login();
+
+                    if(status == 0){
+                        login();
+                    }if(status== 1){
+                        register();
+                }
+
                     // do something when the corky is clicked
 
                     break;
@@ -218,6 +246,11 @@ public class LoginActivity extends AppCompatActivity {
                 case R.id.btn_login_with_google:
                     signIn();
 
+                    break;
+
+
+                case R.id.link_signup:
+                    startSignup();
                     break;
 
 
