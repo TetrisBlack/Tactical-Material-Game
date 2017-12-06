@@ -1,6 +1,7 @@
 
 package hofbo.tactical_material_game;
 
+        import android.support.annotation.NonNull;
         import android.support.v7.widget.RecyclerView;
         import android.util.Log;
         import android.view.LayoutInflater;
@@ -9,7 +10,19 @@ package hofbo.tactical_material_game;
         import android.widget.ProgressBar;
         import android.widget.TextView;
 
+        import com.google.android.gms.tasks.OnCompleteListener;
+        import com.google.android.gms.tasks.OnFailureListener;
+        import com.google.android.gms.tasks.OnSuccessListener;
+        import com.google.android.gms.tasks.Task;
+        import com.google.firebase.auth.FirebaseAuth;
+        import com.google.firebase.firestore.DocumentReference;
+        import com.google.firebase.firestore.DocumentSnapshot;
+        import com.google.firebase.firestore.FirebaseFirestore;
+        import com.google.firebase.firestore.QuerySnapshot;
+
+        import java.util.HashMap;
         import java.util.List;
+        import java.util.Map;
 
 /**
  * Created by Deniz on 14.10.2017.
@@ -18,6 +31,9 @@ package hofbo.tactical_material_game;
 
 public class LoadoutItemAdapter extends RecyclerView.Adapter<LoadoutItemAdapter.ViewHolder> {
     private static final String TAG = "CustomAdapter";
+
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     private ShipStat[] mDataSet;
 
@@ -40,6 +56,58 @@ public class LoadoutItemAdapter extends RecyclerView.Adapter<LoadoutItemAdapter.
                 public void onClick(View v) {
                     Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
                     //TODO: einstellungen des Loadout an die datenbank übergeben
+
+
+                    db.collection("users").document(mAuth.getUid()).collection("loadout").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                QuerySnapshot document = task.getResult();
+                                if (document != null) {
+                                    Log.d(TAG, "DocumentSnapshot data: " + task.getResult().size());
+                                    if(task.getResult().size() < 3){
+
+                                        Map<String, Object> ship = new HashMap<>();
+                                        ship.put("shipID", getAdapterPosition());
+                                        db.collection("users").document(mAuth.getUid()).collection("loadout").add(ship).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            @Override
+                                            public void onSuccess(DocumentReference documentReference) {
+                                                Log.d("LoadoutItemAdapter","DB write successful");
+
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d(TAG, e.toString());
+                                            }
+                                        });
+
+
+
+                                    }
+                                } else {
+                                    Log.d(TAG, "No such document");
+                                }
+                            } else {
+                                Log.d(TAG, "get failed with ", task.getException());
+                            }
+                        }
+                    });
+
+
+
+
+                    if(v.findViewById(R.id.fragment_loadout_selship1_button_img) != null) {
+                        if(v.findViewById(R.id.fragment_loadout_selship2_button_img) != null){
+                            if(v.findViewById(R.id.fragment_loadout_selship3_button_img) != null){
+
+
+
+
+                            }
+                        }
+                    }
+
 
 
 

@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,10 +18,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import hofbo.tactical_material_game.LoadoutItemAdapter;
 import hofbo.tactical_material_game.R;
@@ -89,6 +93,8 @@ public class LoadoutFragment extends Fragment {
         return fragment;
     }
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,6 +152,28 @@ public class LoadoutFragment extends Fragment {
                     }
                 });
 
+        db.collection("users")
+                .document(mAuth.getUid()).collection("loadout")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w("test", "Listen failed.", e);
+                            return;
+                        }
+
+                        List<Double> ships = new ArrayList<>();
+                        for (DocumentSnapshot doc : value) {
+                            if (doc.get("shipID") != null) {
+                                ships.add(doc.getDouble("shipID"));
+                            }
+                        }
+                        Log.d("test", "Current ShipID" + ships);
+                    }});
+
+
+
 
 
 
@@ -192,4 +220,8 @@ public class LoadoutFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+
+
 }

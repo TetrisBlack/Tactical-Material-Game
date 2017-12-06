@@ -34,7 +34,14 @@
                 app:layout_constraintEnd_toStartOf="@+id/fragment_loadout_selship2"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" >
+
+                <ImageButton
+                    android:id="@+id/fragment_loadout_selship1_button_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_whatshot_black_24dp" />
+            </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:id="@+id/fragment_loadout_selship2"
@@ -46,7 +53,14 @@
                 app:layout_constraintEnd_toStartOf="@+id/fragment_loadout_selship3"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/fragment_loadout_selship1"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" >
+
+                <ImageButton
+                    android:id="@+id/fragment_loadout_selship2_button_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_whatshot_black_24dp" />
+            </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:id="@+id/fragment_loadout_selship3"
@@ -60,6 +74,11 @@
                 app:layout_constraintStart_toEndOf="@+id/fragment_loadout_selship2"
                 app:layout_constraintTop_toTopOf="parent" >
 
+                <ImageButton
+                    android:id="@+id/fragment_loadout_selship3_button_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_whatshot_black_24dp" />
             </android.support.v7.widget.CardView>
         </android.support.constraint.ConstraintLayout>
 

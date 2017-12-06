@@ -25,18 +25,26 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
     private int status = 0;
 
     private ProgressBar spinner;
@@ -70,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
 
                             FirebaseUser user = mAuth.getCurrentUser();
+                            addUserTodb();
                             finish();
 
                         } else {
@@ -155,6 +164,7 @@ public class LoginActivity extends AppCompatActivity {
                                 spinner.setVisibility(View.GONE);
                                 Log.d("WHY?", "Logged in!");
                                 FirebaseUser user = mAuth.getCurrentUser();
+                                addUserTodb();
                                 finish();
                             } else {
                                 Snackbar.make(findViewById(R.id.Fragment_Container), "Authentication failed.", Snackbar.LENGTH_LONG).show();
@@ -216,6 +226,7 @@ public class LoginActivity extends AppCompatActivity {
         login_password.addTextChangedListener(textWatcher);
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -250,7 +261,7 @@ public class LoginActivity extends AppCompatActivity {
             // So we will make
             switch (v.getId() /*to get clicked view id**/) {
                 case R.id.btn_login:
-                    spinner.setVisibility(View.VISIBLE);
+                    //spinner.setVisibility(View.VISIBLE);
                     if(status == 0){
                         login();
                     }if(status== 1){
@@ -262,7 +273,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 case R.id.btn_login_with_google:
                     signIn();
-                    spinner.setVisibility(View.VISIBLE);
+                    //spinner.setVisibility(View.VISIBLE);
 
                     break;
 
@@ -334,4 +345,31 @@ public class LoginActivity extends AppCompatActivity {
         public void afterTextChanged(Editable editable) {
         }
     };
+    private void addUserTodb(){
+
+        Map<String, Object> user = new HashMap<>();
+        user.put("email", mAuth.getCurrentUser().getEmail());
+        user.put("name", mAuth.getCurrentUser().getDisplayName());
+
+
+
+        db.collection("users").document(mAuth.getUid()).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("Login DB:","User was written!");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("Login DB:",e.toString());
+            }
+        });
+
+
+
+
+
+
+    }
+
 }
