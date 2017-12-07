@@ -3,16 +3,13 @@ package hofbo.tactical_material_game;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -22,7 +19,6 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,7 +29,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -46,8 +41,6 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private int status = 0;
-
-    private ProgressBar spinner;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -101,8 +94,8 @@ public class LoginActivity extends AppCompatActivity {
     // Registrieren
     public void register() {
 
-        EditText login_email = (EditText) this.findViewById(R.id.input_email);
-        EditText login_password = (EditText) this.findViewById(R.id.input_password);
+        EditText login_email = findViewById(R.id.input_email);
+        EditText login_password = findViewById(R.id.input_password);
 
         if (login_email.getText().length() > 0 && login_password.getText().length() > 5) {
 
@@ -118,17 +111,16 @@ public class LoginActivity extends AppCompatActivity {
                             // the auth state listener will be notified and logic to handle the
                             // signed in user can be handled in the listener.
                             if (task.isSuccessful()) {
-                                Snackbar.make(findViewById(R.id.Fragment_Container), "Authentication failed.",
-                                        Snackbar.LENGTH_LONG).show();
-                                spinner.setVisibility(View.GONE);
+//                                Snackbar.make(findViewById(R.id.Fragment_Container), "Authentication failed.",
+              //                          Snackbar.LENGTH_LONG).show();
+
 
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 finish();
 
                             } else {
-                                Snackbar.make(findViewById(R.id.Fragment_Container), "Authentication failed.",
-                                        Snackbar.LENGTH_LONG).show();
-                                spinner.setVisibility(View.GONE);
+       //                         Snackbar.make(findViewById(R.id.Fragment_Container), "Authentication failed.",
+                                // Snackbar.LENGTH_LONG).show();
 
 
                             }
@@ -144,8 +136,8 @@ public class LoginActivity extends AppCompatActivity {
     //Login
     public void login() {
 
-        EditText login_email = (EditText) findViewById(R.id.input_email);
-        EditText login_password = (EditText) this.findViewById(R.id.input_password);
+        EditText login_email = this.findViewById(R.id.input_email);
+        EditText login_password = this.findViewById(R.id.input_password);
         String email = login_email.getText().toString();
         String password = login_password.getText().toString();
 
@@ -160,15 +152,13 @@ public class LoginActivity extends AppCompatActivity {
                             // the auth state listener will be notified and logic to handle the
                             // signed in user can be handled in the listener.
                             if (task.isSuccessful()) {
-                                Snackbar.make(findViewById(R.id.Fragment_Container), "Authentication successful", Snackbar.LENGTH_LONG).show();
-                                spinner.setVisibility(View.GONE);
+       //                         Snackbar.make(findViewById(R.id.Fragment_Container), "Authentication successful", Snackbar.LENGTH_LONG).show();
                                 Log.d("WHY?", "Logged in!");
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 addUserTodb();
                                 finish();
                             } else {
-                                Snackbar.make(findViewById(R.id.Fragment_Container), "Authentication failed.", Snackbar.LENGTH_LONG).show();
-                                spinner.setVisibility(View.GONE);
+//                                Snackbar.make(findViewById(R.id.Fragment_Container), "Authentication failed.", Snackbar.LENGTH_LONG).show();
                             }
 
                             // ...
@@ -180,8 +170,13 @@ public class LoginActivity extends AppCompatActivity {
     }
     public void startSignup(){
         if(status == 0){
+            EditText login_email = this.findViewById(R.id.input_email);
+            EditText login_password = this.findViewById(R.id.input_password);
             Button btn = findViewById(R.id.btn_login);
             btn.setText("Register");
+            btn.setEnabled(false);
+            login_email.setText("");
+            login_password.setText("");
             findViewById(R.id.btn_login_with_google).setVisibility(View.INVISIBLE);
             TextView txt = findViewById(R.id.link_signup);
             txt.setText("Back to the login");
@@ -189,42 +184,43 @@ public class LoginActivity extends AppCompatActivity {
 
 
         }else if(status == 1){
+            EditText login_email = this.findViewById(R.id.input_email);
+            EditText login_password = this.findViewById(R.id.input_password);
             Button btn = findViewById(R.id.btn_login);
             btn.setText("Login");
+            btn.setEnabled(false);
+            login_email.setText("");
+            login_password.setText("");
             findViewById(R.id.btn_login_with_google).setVisibility(View.VISIBLE);
             TextView txt = findViewById(R.id.link_signup);
             txt.setText("No Account? :O");
             status = 0;
 
-
-
         }
-
-
-
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
-        EditText login_email = (EditText) findViewById(R.id.input_email);
-        EditText login_password = (EditText) findViewById(R.id.input_password);
+        EditText login_email =  findViewById(R.id.input_email);
+        EditText login_password = findViewById(R.id.input_password);
 
         Button btn = findViewById(R.id.btn_login);
+
         btn.setEnabled(false);
-        btn.setOnClickListener(btnListener);
+
         findViewById(R.id.btn_login_with_google).setOnClickListener(btnListener);
+        findViewById(R.id.btn_login).setOnClickListener(btnListener);
         findViewById(R.id.link_signup).setOnClickListener(btnListener);
 
+        //set listeners
         login_email.addTextChangedListener(textWatcher);
         login_password.addTextChangedListener(textWatcher);
 
+        // run once to disable if empty
+        checkFieldsForEmptyValues();
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
@@ -261,7 +257,6 @@ public class LoginActivity extends AppCompatActivity {
             // So we will make
             switch (v.getId() /*to get clicked view id**/) {
                 case R.id.btn_login:
-                    //spinner.setVisibility(View.VISIBLE);
                     if(status == 0){
                         login();
                     }if(status== 1){
@@ -273,8 +268,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 case R.id.btn_login_with_google:
                     signIn();
-                    //spinner.setVisibility(View.VISIBLE);
-
                     break;
 
 
@@ -300,11 +293,11 @@ public class LoginActivity extends AppCompatActivity {
 
         }
     }
-    private  void checkFieldsForEmptyValues(View view){
-        Button b = (Button) view.findViewById(R.id.btn_login);
+    private void checkFieldsForEmptyValues(){
+        Button b = findViewById(R.id.btn_login);
 
-        EditText login_email = (EditText) view.findViewById(R.id.input_email);
-        EditText login_password = (EditText) view.findViewById(R.id.input_password);
+        EditText login_email = findViewById(R.id.input_email);
+        EditText login_password = findViewById(R.id.input_password);
 
         String s1 = login_email.getText().toString();
         String s2 = login_password.getText().toString();
@@ -338,7 +331,7 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            checkFieldsForEmptyValues(findViewById(R.id.Fragment_Container));
+            checkFieldsForEmptyValues();
         }
 
         @Override
