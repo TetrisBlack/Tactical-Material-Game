@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.WorkerThread;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,18 +14,34 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.firestore.CollectionReference;
+
+
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Callable;
+
 
 import hofbo.tactical_material_game.LoadoutItemAdapter;
 import hofbo.tactical_material_game.R;
@@ -45,6 +62,9 @@ public class LoadoutFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    Map<String, Object>  ships =  new HashMap<>();
+    ArrayList<Map<String,Object>> shipListe = new ArrayList<>();
+
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -55,6 +75,41 @@ public class LoadoutFragment extends Fragment {
 
             int id = view.getId();
             switch (id) {
+                case R.id.fragment_loadout_selship1_button:
+
+                    db.collection("users")
+                            .document(mAuth.getUid()).collection("loadout").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot documentSnapshots){
+                            for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                                documentSnapshot.getReference().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            Log.d("DELETE",task.toString());
+
+                                        }else{
+                                            Log.d("DELETE",task.toString());
+                                        }
+                                    }
+                                });
+
+                            }
+                        }
+                    });
+
+
+                    break;
+
+                case R.id.fragment_loadout_selship2_button:
+                    db.collection("users").document("loadout").delete();
+                    break;
+
+                case R.id.fragment_loadout_selship3_button:
+                    db.collection("users").document("loadout").delete();
+
+                    break;
+
 
 
 
@@ -110,9 +165,9 @@ public class LoadoutFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_loadout, container, false);
 
-        //view.findViewById(R.id.button3).setOnClickListener(mOnClickListener);
-        //view.findViewById(R.id.button4).setOnClickListener(mOnClickListener);
-        //view.findViewById(R.id.button5).setOnClickListener(mOnClickListener);
+        view.findViewById(R.id.fragment_loadout_selship1_button).setOnClickListener(mOnClickListener);
+        view.findViewById(R.id.fragment_loadout_selship2_button).setOnClickListener(mOnClickListener);
+        view.findViewById(R.id.fragment_loadout_selship3_button).setOnClickListener(mOnClickListener);
 
         final RecyclerView rv = view.findViewById(R.id.fragment_loadout_listview);
         rv.setHasFixedSize(true);
@@ -163,13 +218,42 @@ public class LoadoutFragment extends Fragment {
                             return;
                         }
 
-                        List<Double> ships = new ArrayList<>();
+
                         for (DocumentSnapshot doc : value) {
-                            if (doc.get("shipID") != null) {
-                                ships.add(doc.getDouble("shipID"));
+                            if (doc.get("shipRef") != null) {
+                                //ships.add(doc.getReference());
+
+                                Log.d("test", doc.getReference().toString());
+                                try {
+                                    DocumentReference test = doc.getDocumentReference("shipRef");
+
+                                    test.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if(task.isSuccessful()){
+                                                if(task.getResult().exists()) {
+                                                    ships = task.getResult().getData();
+                                                    Log.d("JA TEST", ships.toString());
+                                                    shipListe.add(ships);
+                                                }
+                                            }else{
+
+                                            }
+                                            updateUI(shipListe);
+
+                                        }
+                                    });
+
+                                }catch (Exception el){
+
+
+                                }
+
                             }
                         }
-                        Log.d("test", "Current ShipID" + ships);
+                        shipListe.clear();
+                        Log.d("test", "Current ShipID" );
                     }});
 
 
@@ -221,6 +305,50 @@ public class LoadoutFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+    public void updateUI(ArrayList<Map<String,Object>> ships){
+        try {
+            Button btn1 = getView().findViewById(R.id.fragment_loadout_selship1_button);
+            Button btn2 = getView().findViewById(R.id.fragment_loadout_selship2_button);
+            Button btn3 = getView().findViewById(R.id.fragment_loadout_selship3_button);
+
+
+            int counter = 0;
+            for(Map<String,Object> entry: ships){
+                switch (counter){
+                    case 0:
+                        btn1.setText(entry.get("shipName").toString());
+                        counter ++;
+
+                        break;
+                    case 1:
+                        btn2.setText(entry.get("shipName").toString());
+                        counter ++;
+
+                        break;
+
+                    case 2:
+                        btn3.setText(entry.get("shipName").toString());
+                        counter ++;
+
+                        break;
+                    default:
+
+                }
+
+
+
+
+            };
+            shipListe.clear();
+
+        }catch (Exception e){
+
+        }
+
+
+
+
+    };
 
 
 

@@ -68,7 +68,10 @@ public class LoadoutItemAdapter extends RecyclerView.Adapter<LoadoutItemAdapter.
                                     if(task.getResult().size() < 3){
 
                                         Map<String, Object> ship = new HashMap<>();
-                                        ship.put("shipID", getAdapterPosition());
+                                        String javaSucks = new Integer(getAdapterPosition()).toString();
+                                        DocumentReference shipRef = db.collection("ships").document(javaSucks);
+
+                                        ship.put("shipRef", shipRef);
                                         db.collection("users").document(mAuth.getUid()).collection("loadout").add(ship).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                             @Override
                                             public void onSuccess(DocumentReference documentReference) {
@@ -97,16 +100,7 @@ public class LoadoutItemAdapter extends RecyclerView.Adapter<LoadoutItemAdapter.
 
 
 
-                    if(v.findViewById(R.id.fragment_loadout_selship1_button_img) != null) {
-                        if(v.findViewById(R.id.fragment_loadout_selship2_button_img) != null){
-                            if(v.findViewById(R.id.fragment_loadout_selship3_button_img) != null){
 
-
-
-
-                            }
-                        }
-                    }
 
 
 
