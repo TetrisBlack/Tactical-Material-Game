@@ -29,4 +29,5 @@
     <string name="range">Range</string>
     <string name="newsImage">News image</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="FindGame">Find Game</string>
 </resources>

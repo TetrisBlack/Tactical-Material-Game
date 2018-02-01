@@ -4,10 +4,30 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import hofbo.tactical_material_game.Lobby;
 import hofbo.tactical_material_game.R;
 
 
@@ -24,6 +44,77 @@ public class GameFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseDatabase db = FirebaseDatabase.getInstance();
+
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            int id = view.getId();
+            switch (id) {
+                case R.id.FindGame:
+                    final DatabaseReference mDatabase = db.getReference("lobby");
+
+                    ValueEventListener lobbylist = mDatabase.addValueEventListener(new ValueEventListener() {
+                        public boolean stop = false;
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(stop == false) {
+                                    for (DataSnapshot snapshotroot : dataSnapshot.getChildren()) {
+                                        for (DataSnapshot snapshot : snapshotroot.getChildren()) {
+                                            String tmp = "";
+                                            if ("player1".equals(snapshot.getKey())) {
+                                                tmp = snapshot.getValue().toString();
+
+
+                                                Log.d("GameFragment", tmp);
+                                                String tmpUID = mAuth.getUid();
+                                                if (!tmp.equals(tmpUID)) {
+                                                    Map<String, String> p2 = new HashMap<>();
+                                                    p2.put("player1", tmp);
+                                                    p2.put("player2", mAuth.getUid());
+                                                    p2.put("matchID", db.getReference("match").push().getKey());
+                                                    mDatabase.child(tmp).setValue(p2);
+
+                                                    stop = true;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if(dataSnapshot.hasChildren() == false){
+                                    Lobby lobby = new Lobby();
+                                    lobby.createLobby(mAuth.getUid());
+                                }
+
+
+                            }
+
+
+
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+
+
+                    break;
+
+
+
+
+            }
+        }
+    };
+
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -66,7 +157,14 @@ public class GameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_game_, container, false);
+        View view = inflater.inflate(R.layout.fragment_game_, container, false);
+
+        view.findViewById(R.id.FindGame).setOnClickListener(mOnClickListener);
+
+
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
