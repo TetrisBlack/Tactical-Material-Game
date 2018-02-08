@@ -4,32 +4,25 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 
 import hofbo.tactical_material_game.Lobby;
+import hofbo.tactical_material_game.Match;
 import hofbo.tactical_material_game.R;
 
 
@@ -212,21 +205,15 @@ public class GameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        CardView[][] playground = new CardView[6][6];
-
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_game_, container, false);
         view.findViewById(R.id.FindGame).setOnClickListener(mOnClickListener);
 
-        ArrayList<CardView> cardViewArrayList = createPlayGround(view);
 
-        for (int i = 0; i < 6; i++) {
-            for (int z = 0; z < 6; z++) {
-                playground[i][z] = cardViewArrayList.get(0 + (i * 6) + z);
-            }
-        }
+        String yo = "test";
+        Match m = new Match(view, yo);
 
-        playground[0][0].setCardBackgroundColor(3);
+        m.start();
 
         return view;
     }
@@ -270,46 +257,5 @@ public class GameFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private ArrayList<CardView> createPlayGround(View view) {
 
-        ArrayList<CardView> cardViewList = new ArrayList<>();
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_1));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_2));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_3));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_4));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_5));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_6));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_7));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_8));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_9));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_10));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_11));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_12));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_13));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_14));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_15));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_16));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_17));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_18));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_19));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_20));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_21));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_22));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_23));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_24));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_25));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_26));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_27));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_28));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_29));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_30));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_31));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_32));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_33));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_34));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_35));
-        cardViewList.add((CardView) view.findViewById(R.id.game_field_36));
-
-        return cardViewList;
-    }
 }
