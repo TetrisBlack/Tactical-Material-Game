@@ -47,6 +47,7 @@ public class GameFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     ValueEventListener lobbylist;
+    ValueEventListener lobbyMatch;
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -62,45 +63,46 @@ public class GameFragment extends Fragment {
 
                     lobbylist = mDatabase.addValueEventListener(new ValueEventListener() {
                         public boolean stop = false;
+
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                                if(stop == false) {
-                                    for (DataSnapshot snapshotroot : dataSnapshot.getChildren()) {
-                                        for (DataSnapshot snapshot : snapshotroot.getChildren()) {
-                                            String tmp = "";
-                                            if ("player1".equals(snapshot.getKey())) {
-                                                tmp = snapshot.getValue().toString();
+                            if (stop == false) {
+                                for (DataSnapshot snapshotroot : dataSnapshot.getChildren()) {
+                                    for (DataSnapshot snapshot : snapshotroot.getChildren()) {
+                                        String tmp = "";
+                                        if ("player1".equals(snapshot.getKey())) {
+                                            tmp = snapshot.getValue().toString();
 
 
-                                                Log.d("GameFragment", tmp);
-                                                String tmpUID = mAuth.getUid();
-                                                if (!tmp.equals(tmpUID)) {
-                                                    Map<String, String> p2 = new HashMap<>();
-                                                    p2.put("player1", tmp);
-                                                    p2.put("player2", mAuth.getUid());
-                                                    mDatabase.child(tmp).setValue(p2);
+                                            Log.d("GameFragment", tmp);
+                                            String tmpUID = mAuth.getUid();
+                                            if (!tmp.equals(tmpUID)) {
+                                                Map<String, String> p2 = new HashMap<>();
+                                                p2.put("player1", tmp);
+                                                p2.put("player2", mAuth.getUid());
+                                                mDatabase.child(tmp).setValue(p2);
 
-                                                    MatchListener(tmp,"player2");
-                                                    EventDestroy(lobbylist,mDatabase);
+                                                EventDestroy(lobbylist, mDatabase);
 
-                                                    stop = true;
-                                                }
+                                                MatchListener(tmp, tmp);
+
+
+                                                stop = true;
                                             }
                                         }
                                     }
                                 }
+                            }
 
-                                if(dataSnapshot.hasChildren() == false){
-                                    Lobby lobby = new Lobby();
-                                    lobby.createLobby(mAuth.getUid());
-                                    MatchListener(mAuth.getUid(),"player1");
-                                    EventDestroy(lobbylist,mDatabase);
-                                }
-
-
+                            if (dataSnapshot.hasChildren() == false) {
+                                Lobby lobby = new Lobby();
+                                lobby.createLobby(mAuth.getUid());
+                                MatchListener(mAuth.getUid(), mAuth.getUid());
+                                EventDestroy(lobbylist, mDatabase);
                             }
 
 
+                        }
 
 
                         @Override
@@ -110,58 +112,60 @@ public class GameFragment extends Fragment {
                     });
 
 
-
-
                     break;
-
-
 
 
             }
         }
     };
 
-    public void EventDestroy(ValueEventListener lobbylist,DatabaseReference mDatabase) {
+    public void EventDestroy(ValueEventListener lobbylist, DatabaseReference mDatabase) {
         mDatabase.removeEventListener(lobbylist);
 
 
-    };
+    }
 
-    public void MatchListener(String MatchID,String Player1){
-        final String Player = Player1;
-        final DatabaseReference mDatabaseMatch = db.getReference("lobby/"+MatchID);
 
-        mDatabaseMatch.addValueEventListener(new ValueEventListener() {
+    public void MatchListener(String MatchID, final String Player1) {
+
+        final DatabaseReference mDatabaseMatch = db.getReference("lobby/" + MatchID);
+        final DatabaseReference mDatabaseGame = db.getReference("match/" + MatchID);
+
+        lobbyMatch = mDatabaseMatch.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    if(Player.equals("player1")){
-                        Map<String, String> p2 = new HashMap<>();
-                        p2.put("player1", mAuth.getUid());
-                        p2.put("player2", ""  );
-                        mDatabaseMatch.child("").setValue(p2);
+                for (DataSnapshot snapshotroot : dataSnapshot.getChildren()) {
+                    if (snapshotroot.getKey().equals("player2") && snapshotroot.getValue() != "") {
+                        if (Player1.equals(mAuth.getUid())) {
+                            Map<String, Object> p2 = new HashMap<>();
+                            p2.put("player1", Player1);
+                            p2.put("player2", snapshotroot.getValue());
+                            p2.put("shipsPlayer1", "");
+                            p2.put("shipsPlayer2", "");
+                            p2.put("activePlayer", "");
+                            p2.put("round", "");
+                            p2.put("playground", "");
+                            mDatabaseMatch.removeValue();
+                            mDatabaseGame.setValue(p2);
+                            EventDestroy(lobbyMatch, mDatabaseGame);
 
 
+                        } else {
+                            EventDestroy(lobbyMatch, mDatabaseGame);
 
 
+                        }
                     }
-
-                    if(Player.equals("player2")){
-
-                    }
-
 
                 }
-
             }
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-
-
 
 
     }
@@ -216,9 +220,9 @@ public class GameFragment extends Fragment {
 
         ArrayList<CardView> cardViewArrayList = createPlayGround(view);
 
-        for(int i = 0; i < 6; i++){
-            for(int z = 0; z < 6; z++){
-                    playground[i][z] = cardViewArrayList.get(0+ (i*6) + z);
+        for (int i = 0; i < 6; i++) {
+            for (int z = 0; z < 6; z++) {
+                playground[i][z] = cardViewArrayList.get(0 + (i * 6) + z);
             }
         }
 
@@ -266,46 +270,46 @@ public class GameFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-        private ArrayList<CardView> createPlayGround(View view){
+    private ArrayList<CardView> createPlayGround(View view) {
 
-            ArrayList<CardView> cardViewList = new ArrayList<>();
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_1));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_2));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_3));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_4));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_5));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_6));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_7));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_8));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_9));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_10));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_11));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_12));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_13));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_14));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_15));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_16));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_17));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_18));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_19));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_20));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_21));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_22));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_23));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_24));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_25));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_26));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_27));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_28));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_29));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_30));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_31));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_32));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_33));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_34));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_35));
-            cardViewList.add((CardView) view.findViewById(R.id.game_field_36));
+        ArrayList<CardView> cardViewList = new ArrayList<>();
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_1));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_2));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_3));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_4));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_5));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_6));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_7));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_8));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_9));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_10));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_11));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_12));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_13));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_14));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_15));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_16));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_17));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_18));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_19));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_20));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_21));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_22));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_23));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_24));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_25));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_26));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_27));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_28));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_29));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_30));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_31));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_32));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_33));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_34));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_35));
+        cardViewList.add((CardView) view.findViewById(R.id.game_field_36));
 
-            return cardViewList;
+        return cardViewList;
     }
- }
+}
