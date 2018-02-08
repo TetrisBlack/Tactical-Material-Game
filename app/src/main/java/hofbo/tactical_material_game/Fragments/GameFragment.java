@@ -46,6 +46,7 @@ public class GameFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    ValueEventListener lobbylist;
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -59,7 +60,7 @@ public class GameFragment extends Fragment {
                 case R.id.FindGame:
                     final DatabaseReference mDatabase = db.getReference("lobby");
 
-                    ValueEventListener lobbylist = mDatabase.addValueEventListener(new ValueEventListener() {
+                    lobbylist = mDatabase.addValueEventListener(new ValueEventListener() {
                         public boolean stop = false;
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -77,8 +78,10 @@ public class GameFragment extends Fragment {
                                                     Map<String, String> p2 = new HashMap<>();
                                                     p2.put("player1", tmp);
                                                     p2.put("player2", mAuth.getUid());
-                                                    p2.put("matchID", db.getReference("match").push().getKey());
                                                     mDatabase.child(tmp).setValue(p2);
+
+                                                    MatchListener(tmp,"player2");
+                                                    EventDestroy(lobbylist,mDatabase);
 
                                                     stop = true;
                                                 }
@@ -90,6 +93,8 @@ public class GameFragment extends Fragment {
                                 if(dataSnapshot.hasChildren() == false){
                                     Lobby lobby = new Lobby();
                                     lobby.createLobby(mAuth.getUid());
+                                    MatchListener(mAuth.getUid(),"player1");
+                                    EventDestroy(lobbylist,mDatabase);
                                 }
 
 
@@ -116,6 +121,50 @@ public class GameFragment extends Fragment {
         }
     };
 
+    public void EventDestroy(ValueEventListener lobbylist,DatabaseReference mDatabase) {
+        mDatabase.removeEventListener(lobbylist);
+
+
+    };
+
+    public void MatchListener(String MatchID,String Player1){
+        final String Player = Player1;
+        final DatabaseReference mDatabaseMatch = db.getReference("lobby/"+MatchID);
+
+        mDatabaseMatch.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if(Player.equals("player1")){
+                        Map<String, String> p2 = new HashMap<>();
+                        p2.put("player1", mAuth.getUid());
+                        p2.put("player2", ""  );
+                        mDatabaseMatch.child("").setValue(p2);
+
+
+
+
+                    }
+
+                    if(Player.equals("player2")){
+
+                    }
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+    }
 
 
     // TODO: Rename and change types of parameters
