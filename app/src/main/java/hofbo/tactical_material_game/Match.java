@@ -1,7 +1,11 @@
 package hofbo.tactical_material_game;
 
+import android.util.Log;
 import android.view.View;
 import android.support.v7.widget.CardView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -13,6 +17,8 @@ import hofbo.tactical_material_game.Fragments.GameFragment;
 
 public class Match {
 
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private View view;
     private String lobby;
     private CardView[][] playground;
@@ -92,6 +98,7 @@ public class Match {
     public void start() {
         setStartPos();
         listenFields();
+        Log.d("Match!!!", "start:" + lobby);
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -108,8 +115,6 @@ public class Match {
     };
 
     private void listenFields() {
-
-
         for (int i = 0; i < 6; i++) {
             for (int z = 0; z < 6; z++) {
                 //Add the CardView objects in the two dimensional array automatically
@@ -117,4 +122,5 @@ public class Match {
             }
         }
     }
+
 }

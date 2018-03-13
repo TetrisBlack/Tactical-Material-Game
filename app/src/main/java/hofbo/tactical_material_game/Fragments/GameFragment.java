@@ -41,6 +41,7 @@ public class GameFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     ValueEventListener lobbylist;
     ValueEventListener lobbyMatch;
+    View view;
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -127,7 +128,11 @@ public class GameFragment extends Fragment {
         lobbyMatch = mDatabaseMatch.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                String player1 = "";
                 for (DataSnapshot snapshotroot : dataSnapshot.getChildren()) {
+                    if (snapshotroot.getKey().equals("player1") == true){
+                        player1 = snapshotroot.getValue().toString();
+                    }
                     if (snapshotroot.getKey().equals("player2") && snapshotroot.getValue() != "") {
                         if (Player1.equals(mAuth.getUid())) {
                             Map<String, Object> p2 = new HashMap<>();
@@ -142,8 +147,12 @@ public class GameFragment extends Fragment {
                             mDatabaseGame.setValue(p2);
                             EventDestroy(lobbyMatch, mDatabaseGame);
 
+                            Match match  = new Match(view, mAuth.getUid());
+                            match.start();
 
                         } else {
+                            Match match = new Match(view, player1);
+                            match.start();
                             EventDestroy(lobbyMatch, mDatabaseGame);
 
 
@@ -209,12 +218,7 @@ public class GameFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_game_, container, false);
         view.findViewById(R.id.FindGame).setOnClickListener(mOnClickListener);
 
-
-        String yo = "test";
-        Match m = new Match(view, yo);
-
-        m.start();
-
+        this.view = view;
         return view;
     }
 
