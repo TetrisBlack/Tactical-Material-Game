@@ -5,9 +5,15 @@ import android.view.View;
 import android.support.v7.widget.CardView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import hofbo.tactical_material_game.Fragments.GameFragment;
 
@@ -22,6 +28,8 @@ public class Match {
     private View view;
     private String lobby;
     private CardView[][] playground;
+    private String TAG = "MATCH";
+    private Integer Spieler;
 
     public Match(View view, String lobby) {
         this.view = view;
@@ -34,6 +42,7 @@ public class Match {
         CardView[][] playground = new CardView[6][6];
         ArrayList<CardView> cardViewList = new ArrayList<>();
 
+        //region GameFields
         cardViewList.add((CardView) view.findViewById(R.id.game_field_1));
         cardViewList.add((CardView) view.findViewById(R.id.game_field_2));
         cardViewList.add((CardView) view.findViewById(R.id.game_field_3));
@@ -70,6 +79,7 @@ public class Match {
         cardViewList.add((CardView) view.findViewById(R.id.game_field_34));
         cardViewList.add((CardView) view.findViewById(R.id.game_field_35));
         cardViewList.add((CardView) view.findViewById(R.id.game_field_36));
+        //endregion
 
         for (int i = 0; i < 6; i++) {
             for (int z = 0; z < 6; z++) {
@@ -98,7 +108,44 @@ public class Match {
     public void start() {
         setStartPos();
         listenFields();
-        Log.d("Match!!!", "start:" + lobby);
+        initMatchListener();
+        Log.d(TAG, "start:" + lobby);
+    }
+
+    public void initMatchListener(){
+
+        DatabaseReference mDatabase = db.getReference("match" ).child(this.lobby);
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, dataSnapshot.toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        ValueEventListener lobbylist;
+
+        lobbylist = mDatabase.addValueEventListener(new ValueEventListener() {
+
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -108,6 +155,9 @@ public class Match {
             int id = view.getId();
 
             CardView c = (CardView) view.findViewById(id);
+
+
+
             c.setCardBackgroundColor(4);
 
 
