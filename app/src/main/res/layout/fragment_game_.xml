@@ -21,6 +21,11 @@
         app:layout_constraintStart_toEndOf="@+id/game_field_35"
         app:layout_constraintTop_toBottomOf="@+id/game_field_30">
 
+        <ImageView
+            android:id="@+id/p_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@android:color/holo_blue_bright" />
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView

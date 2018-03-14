@@ -30,6 +30,7 @@ public class Match {
     private CardView[][] playground;
     private String TAG = "MATCH";
     private Integer Spieler;
+    private MatchClass match;
 
     public Match(View view, String lobby) {
         this.view = view;
@@ -118,7 +119,8 @@ public class Match {
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(TAG, dataSnapshot.toString());
+
+
             }
 
             @Override
@@ -134,6 +136,22 @@ public class Match {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null){
+                    try {
+                        match = dataSnapshot.getValue(MatchClass.class);
+                        if(match.player1 == mAuth.getUid() && Spieler == null){
+                            Spieler = 1;
+                        }else if(Spieler == null ){
+                            Spieler = 2;
+                        }
+                    }catch (Exception e){
+                        Log.d(TAG, "onDataChange: " + e.toString());
+                    }
+
+
+
+
+                }
 
             }
 
@@ -148,17 +166,42 @@ public class Match {
 
     }
 
+    private View tmpCard;
+    private int x;
+    private int y;
+
+
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+
+
         @Override
         public void onClick(View view) {
+            //BruteForce x and y
 
-            int id = view.getId();
+            for (int i = 0; i < 6; i++) {
+                for (int z = 0; z < 6; z++) {
+                    //Add the CardView objects in the two dimensional array automatically
+                   if(playground[i][z] == view){
+                       x = i;
+                       y = z;
 
-            CardView c = (CardView) view.findViewById(id);
+
+                   }
+
+                }
+            }
 
 
 
-            c.setCardBackgroundColor(4);
+            if(match.activePlayer == Spieler){
+                int id = view.getId();
+
+                CardView c = (CardView) view.findViewById(id);
+                if(view)
+
+
+            }
+
 
 
         }
@@ -168,6 +211,8 @@ public class Match {
         for (int i = 0; i < 6; i++) {
             for (int z = 0; z < 6; z++) {
                 //Add the CardView objects in the two dimensional array automatically
+                x = i;
+                y = z;
                 playground[i][z].setOnClickListener(mOnClickListener);
             }
         }

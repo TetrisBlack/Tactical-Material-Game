@@ -140,7 +140,7 @@ public class GameFragment extends Fragment {
                             p2.put("player2", snapshotroot.getValue());
                             p2.put("shipsPlayer1", "");
                             p2.put("shipsPlayer2", "");
-                            p2.put("activePlayer", Player1);
+                            p2.put("activePlayer", 1);
                             p2.put("round", "");
                             p2.put("playground", "");
                             mDatabaseMatch.removeValue();
