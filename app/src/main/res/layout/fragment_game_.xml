@@ -22,7 +22,7 @@
         app:layout_constraintTop_toBottomOf="@+id/game_field_30">
 
         <ImageView
-            android:id="@+id/p_1"
+            android:id="@+id/p1_1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@android:color/holo_blue_bright" />
@@ -39,6 +39,11 @@
         app:layout_constraintStart_toEndOf="@+id/game_field_34"
         app:layout_constraintTop_toBottomOf="@+id/game_field_29">
 
+        <ImageView
+            android:id="@+id/p1_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@android:color/holo_blue_bright" />
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
@@ -52,6 +57,11 @@
         app:layout_constraintStart_toEndOf="@+id/game_field_33"
         app:layout_constraintTop_toBottomOf="@+id/game_field_28">
 
+        <ImageView
+            android:id="@+id/p1_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@android:color/holo_blue_bright" />
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
@@ -92,6 +102,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/game_field_info">
 
+        <ImageView
+            android:id="@+id/p2_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@android:color/holo_green_light" />
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
@@ -103,7 +118,14 @@
         app:layout_constraintEnd_toStartOf="@+id/game_field_4"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/game_field_2"
-        app:layout_constraintTop_toBottomOf="@+id/game_field_info" />
+        app:layout_constraintTop_toBottomOf="@+id/game_field_info" >
+
+        <ImageView
+            android:id="@+id/p2_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@android:color/holo_green_light" />
+    </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
         android:id="@+id/game_field_4"
@@ -474,6 +496,11 @@
         app:layout_constraintStart_toEndOf="@+id/game_field_1"
         app:layout_constraintTop_toBottomOf="@+id/game_field_info">
 
+        <ImageView
+            android:id="@+id/p2_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@android:color/holo_green_light" />
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
