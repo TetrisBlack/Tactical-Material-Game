@@ -1,10 +1,14 @@
 package hofbo.tactical_material_game;
 
+import android.graphics.drawable.PictureDrawable;
+import android.media.Image;
 import android.util.Log;
 import android.view.View;
 import android.support.v7.widget.CardView;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -14,6 +18,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
+import javax.net.ssl.CertPathTrustManagerParameters;
 
 /**
  * Created by Bodi on 07.02.2018.
@@ -117,7 +123,7 @@ public class Match {
 
     public void initMatchListener() {
 
-
+        //Reagiert auf änderungen der Datenbank
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -140,16 +146,49 @@ public class Match {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
                     try {
+                        //befüllen der Match classe
                         match = dataSnapshot.getValue(MatchClass.class);
+
+                        //abfrage ob das gerät Player1 oder Player2 ist
                         if (match.player1 == mAuth.getUid() && spieler == null) {
                             spieler = 1;
                         } else if (spieler == null) {
                             spieler = 2;
                         }
 
+                        //überprüfen ob der playground befüllt und dann die neuanordnung einleiten
                         if (match.playground != null && match.activePlayer == spieler) {
                             rebuildEnemy(match.playground);
                         }
+                        //setzten der zerstörten schiffe
+                        if (match.player1.equals(mAuth.getUid())) {
+                            dmg(match.shipsPlayer1);
+                        } else {
+                            dmg(match.shipsPlayer2);
+                        }
+
+                        //überprüfen ob der gegner verloren oder gewonnen hatt.
+                        if (match.shipsPlayer1.equals("222")){
+                            if (match.player1.equals(mAuth.getUid())) {
+                                Toast.makeText(view.getContext(), "VERLOREN",
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(view.getContext(), "GEWONNEN",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+
+                        }else if(match.shipsPlayer2.equals("222")) {
+                            if (match.player1.equals(mAuth.getUid())) {
+                                Toast.makeText(view.getContext(), "GEWONNEN",
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(view.getContext(), "VERLOREN",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+
+
+                        }
+
 
                     } catch (Exception e) {
                         Log.d(TAG, "onDataChange: " + e.toString());
@@ -185,8 +224,8 @@ public class Match {
             ImageView p_2;
             ImageView p_3;
 
-
-            if (match.player1.equals(mAuth.getUid()))  {
+            // befüllen der variabeln p_1 bis p_3
+            if (match.player1.equals(mAuth.getUid())) {
                 p_1 = view.findViewById(R.id.p1_1);
                 p_2 = view.findViewById(R.id.p1_2);
                 p_3 = view.findViewById(R.id.p1_3);
@@ -214,8 +253,10 @@ public class Match {
                 }
             }
 
-
+            // schauen ob der Spieler drann ist
             if (match.activePlayer == spieler) {
+
+                //befüllen notwendiger variabeln
                 int id = 0;
                 int parentId_1 = 0;
                 int parentId_2 = 0;
@@ -242,7 +283,83 @@ public class Match {
                 }
 
                 Integer flag = 0;
-                if (tmpView != null) {
+
+                //collisionsabfrage ob der feld schon mit einem shiff besetzt ist
+                if (checkCollision(view_onclick) != null && tmpView != null) {
+                    ImageView pp_1 = null;
+                    ImageView pp_2 = null;
+                    ImageView pp_3 = null;
+
+                    if (match.player1.equals(mAuth.getUid())) {
+                        pp_1 = view.findViewById(R.id.p2_1);
+                        pp_2 = view.findViewById(R.id.p2_2);
+                        pp_3 = view.findViewById(R.id.p2_3);
+
+
+                    } else {
+                        pp_1 = view.findViewById(R.id.p1_1);
+                        pp_2 = view.findViewById(R.id.p1_2);
+                        pp_3 = view.findViewById(R.id.p1_3);
+
+                    }
+
+                    ViewGroup cparent1 = null;
+                    ViewGroup cparent2 = null;
+                    ViewGroup cparent3 = null;
+
+
+                    try {
+
+                        cparent1 = (ViewGroup) pp_1.getParent();
+                        cparent2 = (ViewGroup) pp_2.getParent();
+                        cparent3 = (ViewGroup) pp_3.getParent();
+
+
+                    } catch (Exception e) {
+                        Log.d(TAG, "onClick: " + e.toString());
+                    }
+
+
+                    int tmp = checkCollision(view_onclick).getId();
+                    ViewGroup tmpViewGroup = (ViewGroup) view;
+
+                    if (cparent1.getId() == tmp) {
+                        pp_1.setImageResource(R.color.cardview_light_background);
+                        flag = 1;
+                        if (match.player1.equals(mAuth.getUid())) {
+                            match.shipsPlayer2 = (Integer.parseInt(match.shipsPlayer2) + 100) + "";
+                        } else {
+                            match.shipsPlayer1 = (Integer.parseInt(match.shipsPlayer1) + 100) + "";
+                        }
+
+                    }
+                    if (cparent2.getId() == tmp) {
+                        pp_2.setImageResource(R.color.cardview_light_background);
+                        flag = 1;
+                        if (match.player1.equals(mAuth.getUid())) {
+                            match.shipsPlayer2 = (Integer.parseInt(match.shipsPlayer2) + 10) + "";
+                        } else {
+                            match.shipsPlayer1 = (Integer.parseInt(match.shipsPlayer1) + 10) + "";
+                        }
+                    }
+                    if (cparent3.getId() == tmp) {
+                        pp_3.setImageResource(R.color.cardview_light_background);
+                        flag = 1;
+                        if (match.player1.equals(mAuth.getUid())) {
+                            match.shipsPlayer2 = (Integer.parseInt(match.shipsPlayer2) + 1) + "";
+                        } else {
+                            match.shipsPlayer1 = (Integer.parseInt(match.shipsPlayer1) + 1) + "";
+                        }
+                    }
+                    if (flag == 0) {
+                        attack();
+                    }
+
+
+                }
+
+                //setzten des schiffes das im tmpView abgelegt ist
+                if (tmpView != null && flag == 0) {
                     ViewGroup imageSetter = (ViewGroup) view_onclick;
                     imageSetter.addView(tmpView);
                     tmpView = null;
@@ -252,7 +369,7 @@ public class Match {
 
                 }
 
-
+                //überprüfen welches shiff gemeint ist
                 if (parentId_1 == id && tmpView == null && flag == 0) {
 
                     CardView c = (CardView) view.findViewById(id);
@@ -279,7 +396,8 @@ public class Match {
 
 
                 }
-
+                //wenn der Actionslimit für die runte erreicht ist
+                //werden die änderungen in die datenbank geschrieben
                 if (ActiveSteps > 2) {
                     if (match.activePlayer == 1) {
                         match.activePlayer = 2;
@@ -382,9 +500,9 @@ public class Match {
 
         }
 
-        ViewGroup parent1 = playground[Integer.parseInt(bruteForceFields((View) p_1.getParent()).charAt(0)+"")][Integer.parseInt(bruteForceFields((View) p_1.getParent()).charAt(1)+"")];
-        ViewGroup parent2 = playground[Integer.parseInt(bruteForceFields((View) p_2.getParent()).charAt(0)+"")][Integer.parseInt(bruteForceFields((View) p_2.getParent()).charAt(1)+"")];
-        ViewGroup parent3 = playground[Integer.parseInt(bruteForceFields((View) p_3.getParent()).charAt(0)+"")][Integer.parseInt(bruteForceFields((View) p_3.getParent()).charAt(1)+"")];
+        ViewGroup parent1 = playground[Integer.parseInt(bruteForceFields((View) p_1.getParent()).charAt(0) + "")][Integer.parseInt(bruteForceFields((View) p_1.getParent()).charAt(1) + "")];
+        ViewGroup parent2 = playground[Integer.parseInt(bruteForceFields((View) p_2.getParent()).charAt(0) + "")][Integer.parseInt(bruteForceFields((View) p_2.getParent()).charAt(1) + "")];
+        ViewGroup parent3 = playground[Integer.parseInt(bruteForceFields((View) p_3.getParent()).charAt(0) + "")][Integer.parseInt(bruteForceFields((View) p_3.getParent()).charAt(1) + "")];
 
 
         parent1.removeView(p_1);
@@ -395,6 +513,138 @@ public class Match {
         playground[p2x][p2y].addView(p_2);
         playground[p3x][p3y].addView(p_3);
 
+
+    }
+
+    private View checkCollision(View parentID) {
+        ImageView p_11;
+        ImageView p_12;
+        ImageView p_13;
+        ImageView p_21;
+        ImageView p_22;
+        ImageView p_23;
+
+
+        p_11 = view.findViewById(R.id.p2_1);
+        p_12 = view.findViewById(R.id.p2_2);
+        p_13 = view.findViewById(R.id.p2_3);
+
+        p_21 = view.findViewById(R.id.p1_1);
+        p_22 = view.findViewById(R.id.p1_2);
+        p_23 = view.findViewById(R.id.p1_3);
+
+
+        View pa_11 = null;
+        View pa_12 = null;
+        View pa_13 = null;
+        View pa_21 = null;
+        View pa_22 = null;
+        View pa_23 = null;
+
+        try {
+            pa_11 = (View) p_11.getParent();
+        } catch (Exception e) {
+
+        }
+        try {
+            pa_12 = (View) p_12.getParent();
+        } catch (Exception e) {
+
+        }
+        try {
+            pa_13 = (View) p_13.getParent();
+        } catch (Exception e) {
+
+        }
+
+
+        try {
+            pa_21 = (View) p_21.getParent();
+        } catch (Exception e) {
+
+        }
+        try {
+            pa_22 = (View) p_22.getParent();
+        } catch (Exception e) {
+
+        }
+        try {
+            pa_23 = (View) p_23.getParent();
+        } catch (Exception e) {
+
+        }
+
+
+        if (pa_11 == parentID) {
+            return pa_11;
+        }
+        if (pa_12 == parentID) {
+            return pa_12;
+        }
+        if (pa_13 == parentID) {
+            return pa_13;
+        }
+        if (pa_21 == parentID) {
+            return pa_21;
+        }
+        if (pa_22 == parentID) {
+            return pa_22;
+        }
+        if (pa_23 == parentID) {
+            return pa_23;
+        }
+
+        return null;
+    }
+
+    public void attack() {
+
+        String tmpID = mAuth.getUid();
+        String tmpID2 = match.player1;
+        if (tmpID2.equals(tmpID) == true) {
+            TextView tmp = (TextView) view.findViewById(R.id.game_field_time);
+            tmp.setText("HIT");
+        } else {
+            TextView tmp = (TextView) view.findViewById(R.id.game_field_time);
+            tmp.setText("HIT");
+
+        }
+
+
+    }
+
+    public void dmg(String ships) {
+        int p1 = Integer.parseInt(ships.charAt(0) + "");
+        int p2 = Integer.parseInt(ships.charAt(1) + "");
+        int p3 = Integer.parseInt(ships.charAt(2) + "");
+
+        ImageView p_1;
+        ImageView p_2;
+        ImageView p_3;
+
+
+        if (match.player1.equals(mAuth.getUid())) {
+            p_1 = view.findViewById(R.id.p1_1);
+            p_2 = view.findViewById(R.id.p1_2);
+            p_3 = view.findViewById(R.id.p1_3);
+
+
+        } else {
+            p_1 = view.findViewById(R.id.p2_1);
+            p_2 = view.findViewById(R.id.p2_2);
+            p_3 = view.findViewById(R.id.p2_3);
+
+        }
+
+        if (p1 == 2){
+            p_1.setImageResource(R.color.cardview_light_background);
+        }
+        if (p2 == 2){
+            p_2.setImageResource(R.color.cardview_light_background);
+        }
+        if (p3 == 2){
+            p_3.setImageResource(R.color.cardview_light_background);
+        }
 
     }
 
